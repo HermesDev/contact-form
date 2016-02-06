@@ -30,14 +30,11 @@ add_action('wp_enqueue_styles', 'hermes_contact_form_enqueue_styles');
 
 
 function hermes_contact_form_enqueue_scripts() {
-  wp_register_script('hermes_contact_form_front_js', plugins_url('hermes-accordion/js/client-validation.js'), array('jquery'), '2.2', true);
-  wp_enqueue_script('hermes_contact_form_front_js');
+  wp_register_script('hermes_contact_js', plugins_url('hermes-contact-form/plugin.js'), array('jquery'), '2.1', true);
+  wp_enqueue_script('hermes_contact_js');
 }
 
-function hermes_contact_form_enqueue_styles() {
-  wp_register_script('hermes_contact_form_css', plugins_url('hermes-accordion/js/client-validation.js'), array('jquery'), '2.2', true);
-  wp_enqueue_script('hermes_contact_form_css');
-}
+function hermes_contact_form_enqueue_styles() {}
 
 // Shortcodes handler
 add_action('init', 'hermes_contact_form_register_shortcodes');

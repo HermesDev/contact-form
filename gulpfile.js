@@ -7,7 +7,8 @@ var gulp = require('gulp'),
     nano = require('gulp-cssnano'),
     rimraf = require('gulp-rimraf'),
     autoprefixer = require('gulp-autoprefixer'),
-    sourcemaps = require('gulp-sourcemaps');   
+    sourcemaps = require('gulp-sourcemaps'),
+    jshint = require('gulp-jshint');   
 
 var sassOptions = {
   errLogToConsole: true,
@@ -41,9 +42,19 @@ function cleanDist() {
    			.pipe(rimraf());
 }
 
+function buildJs() {
+  gulp.src('js/src/*.js')
+  .pipe(jshint())
+  .pipe(jshint.reporter('default'))
+  .pipe(concat('plugin.js'))
+  .pipe(gulp.dest('./'));
+};
+
+
 gulp.task('build-css', buildCss);
+gulp.task('build-js', buildJs);
 gulp.task('build-min-css', ['build-css'], buildMinCss);
+gulp.task('build-prod', ['build-min-css', 'build-js'], cleanDist);
 gulp.task('watch-css', ['build-css'], watchCss);
-gulp.task('build-prod', ['build-min-css'], cleanDist);
 
 gulp.task('default', ['watch-css']);

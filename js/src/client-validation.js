@@ -1,26 +1,41 @@
-/**
- * isEmail validate an email address
- * @param   string   email the email to validate
- * @return  boolean  return true if the email is valid or false otherwise
- */
-function isEmail(email) {
-  var re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-  return re.test(email);
-}
 
 (function() {
-	var form = document.getElementById('hermes-contact-form');
-	var errorOutput = form.querySelectorAll('.output.error');
+	console.log('debug hermes-contact-form');
+	/**
+	 * isEmail validate an email address
+	 * @param   string   email the email to validate
+	 * @return  boolean  return true if the email is valid or false otherwise
+	 */
+	function isEmail(email) {
+	  var re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+	  return re.test(email);
+	}
 
 	/**
 	 * showError show error message
 	 * @param  string  message  the error message to display
 	 */
-	function showError(element, message) {
+	function showError(message) {
 		errorOutput.innerHTML = message;
 	  errorOutput.style.display = 'block';
+	  errorOutput.setAttribute('class', 'error');
 	  element.setAttribute('class', 'error');
 	}
+
+	/**
+	 * showError show error message
+	 * @param  string  message  the error message to display
+	 */
+	function showSuccess(message) {
+		errorOutput.innerHTML = message;
+	  errorOutput.style.display = 'block';
+	  errorOutput.setAttribute('class', 'success');
+	}
+	
+	var form = document.getElementById('hermes-contact-form');
+	var errorOutput = form.querySelectorAll('.output.error');
+	var successOutput = form.querySelectorAll('.output.success');
+
 
 	/**
 	 * isFormValid form validation
@@ -67,7 +82,7 @@ function isEmail(email) {
 	form.onsubmit = function() {
 		var name = this.getElementById('visitor-name'),
 		    email = this.getElementById('visitor-email'),
-        message = this.getElementById('visitor-message'),
+        message = this.getElementById('visitor-message');
 
     // client side form validation
 		if(!isFormValid(name, email, message)) {
@@ -91,8 +106,9 @@ function isEmail(email) {
 		xhr.onreadystatechange = function() { 
 	    if(xhr.readyState == 4 && xhr.status == 200) {
 	    	console.log(this.responseText);
+	    	showSuccess(this.responseText);
 	    }
-		}
+		};
 		xhr.send(params);
 
 	};
