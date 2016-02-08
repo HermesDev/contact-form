@@ -1,5 +1,6 @@
 <div class="hermes-contact-form-wrap">
-	<form id="hermes-contact-form" action="submit-contact-form" method="post" novalidate>
+	<form id="hermes-contact-form" novalidate>
+		<div class="output"></div>
 		<div class="name">
 			<label for="visitor-name">Name</label>
 			<input id="visitor-name" type="text">
@@ -14,7 +15,7 @@
 		</div>
 		<div class="submit">
 			<button type="submit">Submit</button>
-			<?php wp_nonce_field( 'submit-contact-form' ); ?>
+			<?php wp_nonce_field('contact_form_token', 'csrf_token'); ?>
 		</div>
 	</form>
 </div>

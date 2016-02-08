@@ -1,6 +1,5 @@
 
 (function() {
-	console.log('debug hermes-contact-form');
 	/**
 	 * isEmail validate an email address
 	 * @param   string   email the email to validate
@@ -11,66 +10,64 @@
 	  return re.test(email);
 	}
 
-	/**
-	 * showError show error message
-	 * @param  string  message  the error message to display
-	 */
-	function showError(message) {
-		errorOutput.innerHTML = message;
-	  errorOutput.style.display = 'block';
-	  errorOutput.setAttribute('class', 'error');
-	  element.setAttribute('class', 'error');
-	}
-
-	/**
-	 * showError show error message
-	 * @param  string  message  the error message to display
-	 */
-	function showSuccess(message) {
-		errorOutput.innerHTML = message;
-	  errorOutput.style.display = 'block';
-	  errorOutput.setAttribute('class', 'success');
-	}
-	
 	var form = document.getElementById('hermes-contact-form');
-	var errorOutput = form.querySelectorAll('.output.error');
-	var successOutput = form.querySelectorAll('.output.success');
+	var output = form.querySelector('.output');
 
+	/**
+	 * showError show error message
+	 * @param  string  message  the error message to display
+	 */
+	var showError = function(message, element) {
+		output.innerHTML = message;
+	  output.style.display = 'block';
+	  output.className += ' error';
+	  element.setAttribute('class', 'error');
+	};
+
+	/**
+	 * showError show error message
+	 * @param  string  message  the error message to display
+	 */
+	var showSuccess = function(message) {
+		output.innerHTML = message;
+	  output.style.display = 'block';
+	  output.setAttribute('class', 'success');
+	};
 
 	/**
 	 * isFormValid form validation
-	 * @param  string  name     name
-	 * @param  string  email    email
-	 * @param  string  message 	message
+	 * @param  string  name     the name
+	 * @param  string  email    the email
+	 * @param  string  message 	the message
 	 * @return Boolean          true if valid
 	 */
 	function isFormValid(name, email, message) {
 		if(name.value.length === 0) {
-      showError(data.name, 'Name is required.');
+      showError('Name is required.', name);
       return false;
     }
     if(email.value.length === 0) {
-      showError('Email is required.');
+      showError('Email is required.', email);
       return false;
     }
     if(message.value.length === 0) {
-      showError('Message is required.');
-      return false;
-    }
-    if(name.value.length > 200) {
-      showError('Name is too long.');
-      return false;
-    }
-    if(email.value.length > 200) {
-      showError('Email is too long.');
-      return false;
-    }
-    if(message.value.length > 5000) { // a full page
-      showError('Message is too long. Limited to 5000 characters.');
+      showError('Message is required.', message);
       return false;
     }
     if(!isEmail(email.value)) {
-    	showError('Email is invalid.');
+    	showError('Email is invalid.', email);
+      return false;
+    }
+    if(name.value.length > 200) {
+      showError('Name is too long.', name);
+      return false;
+    }
+    if(email.value.length > 200) {
+      showError('Email is too long.', email);
+      return false;
+    }
+    if(message.value.length > 5000) { // a full page
+      showError('Message is too long. Limited to 5000 characters.', message);
       return false;
     }
     return true;
@@ -79,10 +76,12 @@
 	/**
 	 * onsubmit form submission
 	 */
-	form.onsubmit = function() {
-		var name = this.getElementById('visitor-name'),
-		    email = this.getElementById('visitor-email'),
-        message = this.getElementById('visitor-message');
+	form.onsubmit = function(event) {
+		event.preventDefault();
+
+		var name = document.getElementById('visitor-name'),
+		    email = document.getElementById('visitor-email'),
+        message = document.getElementById('visitor-message');
 
     // client side form validation
 		if(!isFormValid(name, email, message)) {
@@ -91,13 +90,13 @@
 
 		// xhr request
     var xhr = new XMLHttpRequest(),
-        url = 'admin-ajax.php',
+        url = '../wp-admin/admin-ajax.php',
         params = '';
 
     params += 'name=' + name.value;
     params += '&email=' + email.value;
     params += '&message=' + message.value;
-    params += '&token=' + this.getElementById('_wpnonce').value;
+    params += '&csrf_token=' + document.getElementById('csrf_token').value;
     params += '&action=' + 'get_contact_form_data';
 
 		xhr.open("POST", url, true);

@@ -1,34 +1,27 @@
 <?php
 
-
-add_filter( 'wp_mail_content_type','hermes_contact_form_set_content_type' );
-
-function hermes_contact_form_set_content_type(){
-    return "text/html";
-}
-
-add_action('wp_ajax_get_contact_form_data', 'hermes_contact_form_send_email');
-add_action('wp_ajax_nopriv_get_contact_form_data', 'hermes_contact_form_send_email');
+add_action('wp_ajax_update_contact_form_settings', 'hermes_contact_form_update_settings');
+add_action('wp_ajax_nopriv_update_contact_form_settings', 'hermes_contact_form_update_settings');
 
 /**
- * hermes_contact_form_send_email  called by ajax from client-validation.js
+ * hermes_contact_form_update_settings  called by ajax from admin-settings.js
  * @return array the feedback array with the keys 
  *     - status: error|success
  *     - message: string
  */
-function hermes_contact_form_send_email() {
+function hermes_contact_form_update_settings() {
 	$feedback = array('status' => 'error');
 
 	// check if the CSRF token is valid
-	if(!@isset($_POST['csrf_token']) || !wp_verify_nonce($_POST['csrf_token'], 'contact_form_token')) {
+	if(!@isset($_POST['csrf_token']) || !wp_verify_nonce($_POST['csrf_token'], 'contact_form_settings_token')) {
 	  $feedback['message'] = 'Wrong CSRF token.';
 		die(json_encode($feedback));
 	}
 
-	if(!@isset($_POST['name']) || !@isset($_POST['email']) || !@isset($_POST['message'])) {
-		$feedback['message'] = 'The form is incomplete.';
-		die(json_encode($feedback));
-	}
+	// if(!@isset($_POST['name']) || !@isset($_POST['email']) || !@isset($_POST['message'])) {
+	// 	$feedback['message'] = 'The form is incomplete.';
+	// 	die(json_encode($feedback));
+	// }
 
 	// Sanitize
 	$name = sanitize_text_field($_POST['name']);

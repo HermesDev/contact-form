@@ -47,7 +47,7 @@ function buildJs() {
   .pipe(jshint())
   .pipe(jshint.reporter('default'))
   .pipe(concat('plugin.js'))
-  .pipe(gulp.dest('./'));
+  .pipe(gulp.dest('js/'));
 };
 
 
