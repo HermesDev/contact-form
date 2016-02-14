@@ -16,12 +16,12 @@ function hermes_contact_form_update_settings() {
 		'messages' => array()
 	);
 
-	if(!hermes_is_csrf_token_valid($_POST['csrf_token']) {
+	if(!hermes_is_csrf_token_valid($_POST['csrf_token'])) {
 		$feedback['message'] = 'Wrong CSRF token.';
 		send_user_feedback($feedback);
 	}
 
-	if(!hermes_are_all_input_set($_POST) {
+	if(!hermes_are_all_input_set($_POST)) {
 		$feedback['message'] = 'The form is incomplete.';
 		send_user_feedback($feedback);
 	}
@@ -39,7 +39,7 @@ function hermes_contact_form_update_settings() {
 	}
 
 	$feedback['status'] = 'success';
-	$feedback['message'] = 'Settings have been updated successfully.'
+	$feedback['message'] = 'Settings have been updated successfully.';
 	send_user_feedback($feedback);
 }
 
@@ -74,11 +74,11 @@ function hermes_is_csrf_token_valid($csrf_token) {
 function hermes_are_all_input_set($input_data) {
 	if(!@isset($input_data[EMAIL_RECIPIENT_OPTION]) || 
 	!@isset($input_data[EMAIL_SUBJECT_OPTION]) || 
-	!@isset($input_data[MESSAGE_LENGTH_OPTION])) ||
-	!@isset($input_data[SUCCESS_CLASS_OPTION])) ||
-	!@isset($input_data[ERROR_CLASS_OPTION])) ||
-	!@isset($input_data[FORM_INCOMPLETE_MESSAGE_OPTION])) ||
-	!@isset($input_data[SEND_EMAIL_SUCCESS_MESSAGE_OPTION])) ||
+	!@isset($input_data[MESSAGE_LENGTH_OPTION]) ||
+	!@isset($input_data[SUCCESS_CLASS_OPTION]) ||
+	!@isset($input_data[ERROR_CLASS_OPTION]) ||
+	!@isset($input_data[FORM_INCOMPLETE_MESSAGE_OPTION]) ||
+	!@isset($input_data[SEND_EMAIL_SUCCESS_MESSAGE_OPTION]) ||
 	!@isset($input_data[SEND_EMAIL_ERROR_MESSAGE_OPTION])) {
 		return false;
 	}
