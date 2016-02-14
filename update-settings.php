@@ -18,26 +18,37 @@ function hermes_contact_form_update_settings() {
 
 	if(!hermes_is_csrf_token_valid($_POST['csrf_token']) {
 		$feedback['message'] = 'Wrong CSRF token.';
-		die(json_encode($feedback));
+		send_user_feedback($feedback);
 	}
 
 	if(!hermes_are_all_input_set($_POST) {
 		$feedback['message'] = 'The form is incomplete.';
-		die(json_encode($feedback));
+		send_user_feedback($feedback);
 	}
 	
 	$data = hermes_sanitize_form($_POST); // Sanitize and escape HTML
 
-	if(!hermes_contact_is_form_valid($data)) {
-		die(json_encode($feedback));
+	if(!hermes_contact_is_form_valid($data, $feedback)) {
+		send_user_feedback($feedback);
 	}
 
+	$data = hermes_filter_out_empty_fields($data);
+
 	if(!hermes_contact_save_settings_to_db($data)) {
-		die(json_encode($feedback));	
+		send_user_feedback($feedback);	
 	}
 
 	$feedback['status'] = 'success';
 	$feedback['message'] = 'Settings have been updated successfully.'
+	send_user_feedback($feedback);
+}
+
+
+/**
+ * send_user_feedback send a feedback array to the end user and exit the program
+ * @param  array  $feedback  the feedback array
+ */
+function send_user_feedback($status) {
 	die(json_encode($feedback));
 }
 
@@ -99,12 +110,11 @@ function hermes_sanitize_form($input_data) {
 
 /**
  * hermes_contact_form_validate_form form validation
- * @param  string  name     the name
- * @param  string  email    the email
- * @param  string  message 	the message
- * @return Boolean          true if valid
+ * @param  array   $data      the array of data to validate
+ * @param  array   $feedback  the feedback array reference
+ * @return Boolean            true if valid
  */
-function hermes_contact_is_form_valid($data) {
+function hermes_contact_is_form_valid($data, &$feedback) {
 	$result = true;
 	define('TEXT_FIELD_LEN_MAX', 200);
 
@@ -151,6 +161,22 @@ function hermes_contact_is_form_valid($data) {
 	return $result;
 }
 
+/**
+ * hermes_filter_out_empty_fields filter out empty fields
+ * @param  array  $input_data  the unfiltered data
+ * @return array               the filtered data
+ */
+function hermes_filter_out_empty_fields($input_data) {
+	$data = array();
+
+	foreach($input_data as $key => $value) {
+		if($value !== '') {
+			$data[$key] = $value;
+		}
+	}
+
+	return $data;
+}
 
 /**
  * hermes_contact_save_settings_to_db save all the settings to the database
