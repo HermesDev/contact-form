@@ -42,19 +42,16 @@ function cleanDist() {
    			.pipe(rimraf());
 }
 
-function buildJs() {
-  gulp.src('js/src/*.js')
+function lintJs() {
+  return gulp.src('js/src/*.js')
   .pipe(jshint())
   .pipe(jshint.reporter('default'))
-  .pipe(concat('plugin.js'))
-  .pipe(gulp.dest('js/'));
 };
 
 
+gulp.task('lint-js', lintJs);
 gulp.task('build-css', buildCss);
-gulp.task('build-js', buildJs);
 gulp.task('build-min-css', ['build-css'], buildMinCss);
-gulp.task('build-prod', ['build-min-css', 'build-js'], cleanDist);
+gulp.task('build-prod', ['build-min-css'], cleanDist);
 gulp.task('watch-css', ['build-css'], watchCss);
-
 gulp.task('default', ['watch-css']);
