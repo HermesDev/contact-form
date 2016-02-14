@@ -12,44 +12,44 @@
  -->
 <div class="hermes-contact-form-admin-ui-wrap">
 	<h1>Contact form options</h1>
-	<form id="hermes-contact-form-admin-ui" novalidate>
+	<form name="hermesContactFormAdminUi" novalidate>
 		<div class="output"></div>
 		<div class="email-recipient-group">
 			<label for="email-recipient">Email recipient</label>
-			<input id="email-recipient" type="text">
+			<input name="emailRecipient" type="text">
 		</div>
 		<div class="email-subject-group">
 			<label for="email-subject">Email subject</label>
-			<input id="email-subject" type="text">
+			<input name="emailSubject" type="text">
 		</div>
 		<div class="message-length-group">
 			<label for="message-length">Message max length</label>
-			<input id="message-length" type="number" placeholder="<?php  ?>">
+			<input name="messageLength" type="number" placeholder="<?php  ?>">
 		</div>
 		<hr>
 		<div class="success-class-group">
 			<label for="success-class">css class if success</label>
-			<input id="success-class" type="text"></input>
+			<input name="successClass" type="text"></input>
 		</div>
 		<div class="error-class-group">
 			<label for="error-class">css class if errors</label>
-			<input id="error-class" type="text"></input>
+			<input name="errorClass" type="text"></input>
 		</div>
 		<hr>
 		<div class="form-incomplete-message-group">
 			<label for="form-incomplete-message">Form incomplete message</label>
-			<input id="form-incomplete-message" type="text"></input>
+			<input name="formIncompleteMessage" type="text"></input>
 		</div>
 		<div class="send-email-success-message-group">
 			<label for="send-email-success-message">Send email success message</label>
-			<input id="send-email-success-message" type="text"></input>
+			<input name="sendEmailSuccessMessage" type="text"></input>
 		</div>
 		<div class="send-email-error-message-group">
 			<label for="send-email-error-message">Send email error message</label>
-			<input id="send-email-error-message" type="text"></input>
+			<input name="sendEmailErrorMessage" type="text"></input>
 		</div>
 		<div class="submit">
-			<button type="submit">Submit</button>
+			<button type="submit">Save</button>
 			<?php wp_nonce_field('contact_form_settings_token', 'csrf_token'); ?>
 		</div>
 	</form>

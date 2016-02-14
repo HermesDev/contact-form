@@ -9,35 +9,50 @@ Author URI: http://hermesdevelopment.com
 License: GPLv2
 */
 
-// TODO: fields to be added the wp-admin UI plugin options
-// 1. $to
-// 2. $subject
-// 3. success class
-// 4. error class
-// 5. form incomplete message
-// 6. invalid email message
-// 7. send email error message
-// 8. send email success message
-// 9. length max of the visitor's message
-// 
 define('WEBSITE_SNAPSHOT__PLUGIN_URL', plugin_dir_url(__FILE__));
 
+// Settings
+define('EMAIL_RECIPIENT_OPTION', 'email_recipient');
+define('EMAIL_SUBJECT_OPTION', 'email_subject');
+define('MESSAGE_LENGTH_OPTION', 'message_length');
+define('SUCCESS_CLASS_OPTION', 'success_class');
+define('ERROR_CLASS_OPTION', 'error_class');
+define('FORM_INCOMPLETE_MESSAGE_OPTION', 'form_incomplete_message');
+define('SEND_EMAIL_SUCCESS_MESSAGE_OPTION', 'send_email_success_message');
+define('SEND_EMAIL_ERROR_MESSAGE_OPTION', 'send_email_error_message');
+
 include "send-email.php";
+include "update-settings.php";
+
+// both: front end and wp-admin
+add_action('init', 'hermes_contact_form_enqueue_scripts_both');
 
 // src js and css files for the front end side
 add_action('wp_enqueue_scripts', 'hermes_contact_form_enqueue_scripts');
 add_action('wp_enqueue_styles', 'hermes_contact_form_enqueue_styles');
  
 // src js and css files for the wp-admin side (settings)
-// add_action('admin_init', 'hermes_contact_form_settings_enqueue_scripts');
-// add_action('admin_init', 'hermes_contact_form_settings_enqueue_styles');
+add_action('admin_init', 'hermes_contact_form_settings_enqueue_scripts');
+add_action('admin_init', 'hermes_contact_form_settings_enqueue_styles');
+
+function hermes_contact_form_enqueue_scripts_both() {
+	wp_register_script('validation_js', WEBSITE_SNAPSHOT__PLUGIN_URL . 'node_modules/validate-js/validate.min.js', null, null, false);
+  wp_enqueue_script('validation_js');
+}
 
 function hermes_contact_form_enqueue_scripts() {
-  wp_register_script('hermes_contact_js', WEBSITE_SNAPSHOT__PLUGIN_URL . 'js/plugin.js', null, null, true);
-  wp_enqueue_script('hermes_contact_js');
+	wp_register_script('hermes_contact_form_js', WEBSITE_SNAPSHOT__PLUGIN_URL . 'js/contact-form.js', null, null, true);
+  wp_enqueue_script('hermes_contact_form_js');
 }
 
 function hermes_contact_form_enqueue_styles() {}
+
+function hermes_contact_form_settings_enqueue_scripts() {
+  wp_register_script('hermes_contact_form_admin_ui_js', WEBSITE_SNAPSHOT__PLUGIN_URL . 'js/admin-ui.js', null, null, true);
+  wp_enqueue_script('hermes_contact_form_admin_ui_js');
+}
+
+function hermes_contact_form_settings_enqueue_styles() {}
 
 // Settings page
 add_action('admin_menu', function() {
