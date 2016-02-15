@@ -13,7 +13,6 @@
 <div class="hermes-contact-form-admin-ui-wrap">
 	<h1>Contact form options</h1>
 	<form name="hermesContactFormAdminUi" novalidate>
-		<div class="output"></div>
 		<div class="email-recipient-group">
 			<label for="email-recipient">Email recipient</label>
 			<input name="emailRecipient" type="text">
