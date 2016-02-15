@@ -1,20 +1,39 @@
 
-label,
+input[type="text"],
+textarea,
+label {
+	display: block;
+	width: 100%;
+}
+
 input[type="text"],
 textarea {
 	display: block;
 	width: 100%;
+	padding: 0.5em;
 }
 
 textarea {
 	resize: none;
 }
 
+label {
+	padding-bottom: 0.2em
+}
+
 .input-group {
-	padding: 0 0 1em;
+	padding-bottom: 1em;
 
 	&:last-child {
 		padding: 0;
+	}
+}
+
+.output {
+	display: block;
+
+	&.error {
+		color: red;
 	}
 }
 

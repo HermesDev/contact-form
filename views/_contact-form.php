@@ -1,16 +1,16 @@
 <div class="hermes-contact-form-wrap">
-	<form id="hermes-contact-form" novalidate>
+	<form id="hermes-contact-form" class="contact-form" novalidate>
 		<div class="name input-group">
 			<label for="visitor-name">Name</label>
-			<input id="visitor-name" type="text">
+			<input id="visitor-name" type="text" placeholder="Your Name">
 		</div>
 		<div class="email input-group">
 			<label for="visitor-email">Email</label>
-			<input id="visitor-email" type="text">
+			<input id="visitor-email" type="text" placeholder="Your Message">
 		</div>
 		<div class="message input-group">
 			<label for="visitor-message">Message</label>
-			<textarea id="visitor-message" cols="30" rows="10"></textarea>
+			<textarea id="visitor-message" cols="30" rows="10" placeholder="Your Message"></textarea>
 		</div>
 		<div class="submit input-group">
 			<button type="submit">Submit</button>
