@@ -184,15 +184,14 @@ function hermes_filter_out_empty_fields($input_data) {
  * @return  boolean         return true if the database has been successfully updated
  */
 function hermes_contact_save_settings_to_db($data) {
-	$option_group = 'contatct_form_settings';
-	register_setting($option_group, EMAIL_RECIPIENT_OPTION);
-	register_setting($option_group, EMAIL_SUBJECT_OPTION);
-	register_setting($option_group, MESSAGE_LENGTH_OPTION);
-	register_setting($option_group, SUCCESS_CLASS_OPTION);
-	register_setting($option_group, ERROR_CLASS_OPTION);
-	register_setting($option_group, FORM_INCOMPLETE_MESSAGE_OPTION);
-	register_setting($option_group, SEND_EMAIL_SUCCESS_MESSAGE_OPTION);
-	register_setting($option_group, SEND_EMAIL_ERROR_MESSAGE_OPTION);
+	register_setting(PLUGIN_PREFIX, EMAIL_RECIPIENT_OPTION);
+	register_setting(PLUGIN_PREFIX, EMAIL_SUBJECT_OPTION);
+	register_setting(PLUGIN_PREFIX, MESSAGE_LENGTH_OPTION);
+	register_setting(PLUGIN_PREFIX, SUCCESS_CLASS_OPTION);
+	register_setting(PLUGIN_PREFIX, ERROR_CLASS_OPTION);
+	register_setting(PLUGIN_PREFIX, FORM_INCOMPLETE_MESSAGE_OPTION);
+	register_setting(PLUGIN_PREFIX, SEND_EMAIL_SUCCESS_MESSAGE_OPTION);
+	register_setting(PLUGIN_PREFIX, SEND_EMAIL_ERROR_MESSAGE_OPTION);
 
 	if(!update_option(EMAIL_RECIPIENT_OPTION, $data[EMAIL_RECIPIENT_OPTION])) {
 		return false;

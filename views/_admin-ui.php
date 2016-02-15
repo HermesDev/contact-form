@@ -52,5 +52,6 @@
 			<button type="submit">Save</button>
 			<?php wp_nonce_field('contact_form_settings_token', 'csrf_token'); ?>
 		</div>
+		<div class="output"></div>
 	</form>
 </div>

@@ -39,14 +39,16 @@
 	}], function(errors, event) {
 		event.preventDefault();
 		
+		var form = event.srcElement;
     var output = form.querySelector('.output');
-    output.innerHTML = '';
 
+    output.innerHTML = '';
     if (errors.length > 0) {
       for (var i = 0, errorLength = errors.length; i < errorLength; i++) {
       	output.innerHTML += '<div>' + errors[i].message + '<div/>'
       }
       output.className += ' error';
+      console.log('errors');
     } else {
       output.className += ' success';
 
@@ -59,6 +61,7 @@
 	 * @param  element form the form element
 	 */
 	function sendData(form) {
+		console.log(form);
 	  var xhr = new XMLHttpRequest(),
 	      url = 'admin-ajax.php',
 	      params = '';
@@ -80,7 +83,7 @@
 		xhr.onreadystatechange = function() { 
 	    if(xhr.readyState == 4 && xhr.status == 200) {
 	    	console.log(this.responseText);
-	    	showSuccess(this.responseText);
+	    	// showSuccess(this.responseText);
 	    }
 		};
 		

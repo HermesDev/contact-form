@@ -9,6 +9,8 @@ Author URI: http://hermesdevelopment.com
 License: GPLv2
 */
 
+define('PLUGIN_NAME', 'Contact Form');
+define('PLUGIN_PREFIX', 'hermes_cf_');
 define('WEBSITE_SNAPSHOT__PLUGIN_URL', plugin_dir_url(__FILE__));
 
 // Settings
@@ -56,7 +58,8 @@ function hermes_contact_form_settings_enqueue_styles() {}
 
 // Settings page
 add_action('admin_menu', function() {
-	add_menu_page('Contact Form Options', 'Contact Form Options', 'manage_options', __FILE__, 'hermes_contact_form_settings_view');
+	// add_menu_page('Contact Form Options', 'Contact Form Options', 'manage_options', __FILE__, 'hermes_contact_form_settings_view');
+	add_options_page(PLUGIN_NAME, PLUGIN_NAME, 'manage_options', __FILE__, 'hermes_contact_form_settings_view');
 });
 
 function hermes_contact_form_settings_view() {
