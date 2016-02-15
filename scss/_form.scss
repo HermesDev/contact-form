@@ -1,0 +1,21 @@
+
+label,
+input[type="text"],
+textarea {
+	display: block;
+	width: 100%;
+}
+
+textarea {
+	resize: none;
+}
+
+.input-group {
+	padding: 0 0 1em;
+
+	&:last-child {
+		padding: 0;
+	}
+}
+
+
