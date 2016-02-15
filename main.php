@@ -9,22 +9,10 @@ Author URI: http://hermesdevelopment.com
 License: GPLv2
 */
 
-define('PLUGIN_NAME', 'Contact Form');
-define('PLUGIN_PREFIX', 'hermes_cf_');
-define('WEBSITE_SNAPSHOT__PLUGIN_URL', plugin_dir_url(__FILE__));
-
-// Settings
-define('EMAIL_RECIPIENT_OPTION', 'email_recipient');
-define('EMAIL_SUBJECT_OPTION', 'email_subject');
-define('MESSAGE_LENGTH_OPTION', 'message_length');
-define('SUCCESS_CLASS_OPTION', 'success_class');
-define('ERROR_CLASS_OPTION', 'error_class');
-define('FORM_INCOMPLETE_MESSAGE_OPTION', 'form_incomplete_message');
-define('SEND_EMAIL_SUCCESS_MESSAGE_OPTION', 'send_email_success_message');
-define('SEND_EMAIL_ERROR_MESSAGE_OPTION', 'send_email_error_message');
-
-include "send-email.php";
-include "update-settings.php";
+include 'php/_constants.php';
+include 'php/utils.php';
+include 'php/send-email.php';
+// include 'php/update-settings.php';
 
 
 // src css front and back ends
@@ -56,15 +44,15 @@ function hermes_contact_form_settings_enqueue_scripts() {
 }
 
 // Settings page
-add_action('admin_menu', function() {
-	add_options_page(PLUGIN_NAME, PLUGIN_NAME, 'manage_options', __FILE__, 'hermes_contact_form_settings_view');
-});
+// add_action('admin_menu', function() {
+// 	add_options_page(PLUGIN_NAME, PLUGIN_NAME, 'manage_options', __FILE__, 'hermes_contact_form_settings_view');
+// });
 
-function hermes_contact_form_settings_view() {
-	include 'views/_admin-ui.php';
-}
+// function hermes_contact_form_settings_view() {
+// 	include 'views/_admin-ui.php';
+// }
 
-// Shortcodes handler
+// Contact form
 add_action('init', function() {
 	add_shortcode('hermes_contact_form', 'hermes_contact_form_main_view');
 });

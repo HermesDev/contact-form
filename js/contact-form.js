@@ -14,24 +14,47 @@
 	var output = form.querySelector('.output');
 
 	/**
-	 * showError show error message
-	 * @param  string  message  the error message to display
+	 * clearOutput clear the output
 	 */
-	var showError = function(message, element) {
-		output.innerHTML = message;
-	  output.style.display = 'block';
-	  output.className += ' error';
-	  element.setAttribute('class', 'error');
-	};
+	var clearOuput = function() {
+		output.innerHTML = '';
+	}
 
 	/**
 	 * showError show error message
 	 * @param  string  message  the error message to display
 	 */
-	var showSuccess = function(message) {
-		output.innerHTML = message;
+	var showError = function(message, element) {
+		output.innerHTML += '<div>' + message + '</div>';
 	  output.style.display = 'block';
-	  output.className += ' success';
+
+	  if(output.className.indexOf('success') != -1) { // remove success class if present
+	  	output.className.replace('success', '');
+	  }
+
+	  if(output.className.indexOf('error') == -1) { // add error class if not present
+	  	output.className += ' error';
+	  }
+
+	  element.setAttribute('class', 'error');
+	};
+
+	/**
+	 * showSuccess show success message
+	 * @param  string  message  the error message to display
+	 */
+	var showSuccess = function(message) {
+		output.innerHTML += '<div>' + message + '</div>';
+	  output.style.display = 'block';
+
+	  if(output.className.indexOf('error') != -1) { // remove error class if present
+	  	output.className.replace('error', '');
+	  }
+
+	  if(output.className.indexOf('success') == -1) { // add success class if not present
+	  	output.className += ' success';
+	  }
+
 	  output.setAttribute('class', 'success');
 	};
 
@@ -44,34 +67,51 @@
 	 */
 	function isFormValid(name, email, message) {
 		var result = true;
+		clearOuput();
+
 		if(name.value.length === 0) {
       showError('Name is required.', name);
       result = false;
     }
+
     if(email.value.length === 0) {
       showError('Email is required.', email);
       result = false;
     }
+
     if(message.value.length === 0) {
       showError('Message is required.', message);
       result = false;
     }
+
+    if(result == false) { // validation step1 over
+    	return false;
+    }
+
     if(!isEmail(email.value)) {
     	showError('Email is invalid.', email);
       result = false;
     }
+
+    if(result == false) { // validation step2 over
+    	return false;
+    }
+
     if(name.value.length > 200) {
       showError('Name is too long.', name);
       result = false;
     }
+
     if(email.value.length > 200) {
       showError('Email is too long.', email);
       result = false;
     }
+
     if(message.value.length > 5000) { // a full page
       showError('Message is too long. Limited to 5000 characters.', message);
       result = false;
     }
+
     return result;
 	}
 
@@ -106,8 +146,23 @@
 
 		xhr.onreadystatechange = function() { 
 	    if(xhr.readyState == 4 && xhr.status == 200) {
-	    	console.log(this.responseText);
-	    	showSuccess(this.responseText);
+	    	var response = this.responseText.message;
+	    	clearOuput(); 
+
+	    	var len = response.messages.length;
+	    	if(this.responseText.status === 'success') {
+	    		showSuccess(response.message);
+	    	} else {
+	    		if(!response.message == '') {
+	    			showError(response.message);
+	    		} else if(len > 0) {
+	    			for(var i = 0; i < len; i++) {
+	    				showError(response.messages[i]);
+	    			}
+	    		} else {
+	    			console.error('Something wrong on the php side.');
+	    		}
+	    	}
 	    }
 		};
 

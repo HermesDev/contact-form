@@ -6,7 +6,7 @@
 		</div>
 		<div class="email input-group">
 			<label for="visitor-email">Email</label>
-			<input id="visitor-email" type="text" placeholder="Your Message">
+			<input id="visitor-email" type="text" placeholder="Your Email">
 		</div>
 		<div class="message input-group">
 			<label for="visitor-message">Message</label>

@@ -11,6 +11,10 @@ textarea {
 	display: block;
 	width: 100%;
 	padding: 0.5em;
+
+	&.error {
+		border-color: $error_color;
+	}
 }
 
 textarea {
@@ -23,17 +27,13 @@ label {
 
 .input-group {
 	padding-bottom: 1em;
-
-	&:last-child {
-		padding: 0;
-	}
 }
 
 .output {
 	display: block;
 
 	&.error {
-		color: red;
+		color: $error_color;
 	}
 }
 

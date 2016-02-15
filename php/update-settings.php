@@ -43,16 +43,6 @@ function hermes_contact_form_update_settings() {
 	send_user_feedback($feedback);
 }
 
-
-/**
- * send_user_feedback send a feedback array to the end user and exit the program
- * @param  array  $feedback  the feedback array
- */
-function send_user_feedback($status) {
-	die(json_encode($feedback));
-}
-
-
 /**
  * hermes_is_csrf_token_valid check if the CSRF token is valid
  * @param   string $csrf_token the CSRF token
@@ -116,39 +106,38 @@ function hermes_sanitize_form($input_data) {
  */
 function hermes_contact_is_form_valid($data, &$feedback) {
 	$result = true;
-	define('TEXT_FIELD_LEN_MAX', 200);
 
-	if(strlen($data['emailSubject']) > TEXT_FIELD_LEN_MAX) {
+	if(strlen($data['emailSubject']) > TEXT_FIELD__LEN_MAX) {
 		$feedback['messages'][] = 'Email Subject is too long.';
 		$result = false;
 	}
 
-	if(strlen($data['successClass']) > TEXT_FIELD_LEN_MAX) {
+	if(strlen($data['successClass']) > TEXT_FIELD__LEN_MAX) {
 		$feedback['messages'][] = 'Success Class is too long.';
 		$result = false;
 	}
 
-	if(strlen($data['errorClass']) > TEXT_FIELD_LEN_MAX) {
+	if(strlen($data['errorClass']) > TEXT_FIELD__LEN_MAX) {
 		$feedback['messages'][] = 'Error Class is too long.';
 		$result = false;
 	}
 
-	if(strlen($data['errorClass']) > TEXT_FIELD_LEN_MAX) {
+	if(strlen($data['errorClass']) > TEXT_FIELD__LEN_MAX) {
 		$feedback['messages'][] = 'Error Class is too long.';
 		$result = false;
 	}
 
-	if(strlen($data['formIncompleteMessage']) > TEXT_FIELD_LEN_MAX) {
+	if(strlen($data['formIncompleteMessage']) > TEXT_FIELD__LEN_MAX) {
 		$feedback['messages'][] = 'Form Incomplete Message is too long.';
 		$result = false;
 	}
 
-	if(strlen($data['sendEmailSuccessMessage']) > TEXT_FIELD_LEN_MAX) {
+	if(strlen($data['sendEmailSuccessMessage']) > TEXT_FIELD__LEN_MAX) {
 		$feedback['messages'][] = 'Send Email Success Message is invalid.';
 		$result = false;
 	}
 
-	if(strlen($data['sendEmailErrorMessage']) > TEXT_FIELD_LEN_MAX) {
+	if(strlen($data['sendEmailErrorMessage']) > TEXT_FIELD__LEN_MAX) {
 		$feedback['messages'][] = 'Send Email Error Message is invalid.';
 		$result = false;
 	}
