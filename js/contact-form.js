@@ -161,7 +161,7 @@
 	    		} else if(response.hasOwnProperty('messages') && response.messages.length > 0) {
 	    			var len = response.messages.length,
 	    			    errorMessage = '';
-	    			    console.log(response.messages);
+	    			    
 	    			for(var i = 0; i < len; i++) {
 	    				errorMessage += '<div>' + response.messages[i] + '</div>';
 	    			}
