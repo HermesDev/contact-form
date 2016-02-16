@@ -36,7 +36,9 @@
 	  	output.className += ' error';
 	  }
 
-	  element.setAttribute('class', 'error');
+	  if(typeof element !== 'undefined') {
+	  	element.setAttribute('class', 'error');
+	  }
 	};
 
 	/**
@@ -65,50 +67,47 @@
 	 * @param  string  message 	the message
 	 * @return Boolean          true if valid
 	 */
-	function isFormValid(name, email, message) {
+	function isFormValid(data) {
 		var result = true;
 		clearOuput();
 
-		if(name.value.length === 0) {
-      showError('Name is required.', name);
+		if(data.name.value.length === 0) {
+      showError('Name is required.', data.name);
       result = false;
     }
 
-    if(email.value.length === 0) {
-      showError('Email is required.', email);
+    if(data.email.value.length === 0) {
+      showError('Email is required.', data.email);
       result = false;
     }
 
-    if(message.value.length === 0) {
-      showError('Message is required.', message);
+    if(data.email.value.length !== 0 && !isEmail(data.email.value)) {
+    	showError('Email is invalid.', data.email);
       result = false;
     }
 
-    if(result == false) { // validation step1 over
+    if(data.message.value.length === 0) {
+      showError('Message is required.', data.message);
+      result = false;
+    }
+
+    if(result == false) { 
     	return false;
     }
+    // 2nd step
 
-    if(!isEmail(email.value)) {
-    	showError('Email is invalid.', email);
+    if(data.name.value.length > 200) {
+      showError('Name is too long.', data.name);
       result = false;
     }
 
-    if(result == false) { // validation step2 over
-    	return false;
-    }
-
-    if(name.value.length > 200) {
-      showError('Name is too long.', name);
+    if(data.email.value.length > 200) {
+      showError('Email is too long.', data.email);
       result = false;
     }
 
-    if(email.value.length > 200) {
-      showError('Email is too long.', email);
-      result = false;
-    }
-
-    if(message.value.length > 5000) { // a full page
-      showError('Message is too long. Limited to 5000 characters.', message);
+    if(data.message.value.length > 5000) { // a full page
+      showError('Message is too long. Limited to 5000 characters.', data.message);
       result = false;
     }
 
@@ -121,23 +120,25 @@
 	form.onsubmit = function(event) {
 		event.preventDefault();
 
-		var name = document.getElementById('visitor-name'),
-		    email = document.getElementById('visitor-email'),
-        message = document.getElementById('visitor-message');
+		var data = {};
+
+		data.name = document.getElementById('visitor-name');
+		data.email = document.getElementById('visitor-email');
+		data.message = document.getElementById('visitor-message');
 
     // client side form validation
-		if(!isFormValid(name, email, message)) {
-			return;
-		}
+		// if(!isFormValid(data)) {
+		// 	return;
+		// }
 
 		// xhr request
     var xhr = new XMLHttpRequest(),
         url = '../wp-admin/admin-ajax.php',
         params = '';
 
-    params += 'name=' + name.value;
-    params += '&email=' + email.value;
-    params += '&message=' + message.value;
+    params += 'name=' + data.name.value;
+    params += '&email=' + data.email.value;
+    params += '&message=' + data.message.value;
     params += '&csrf_token=' + document.getElementById('csrf_token').value;
     params += '&action=' + 'get_contact_form_data';
 
@@ -145,23 +146,32 @@
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
 		xhr.onreadystatechange = function() { 
-	    if(xhr.readyState == 4 && xhr.status == 200) {
-	    	var response = this.responseText.message;
+	    if(xhr.readyState === 4 && xhr.status === 200) {
+	    	var response = JSON.parse(this.responseText);
 	    	clearOuput(); 
 
-	    	var len = response.messages.length;
-	    	if(this.responseText.status === 'success') {
+	    	if(response.status === 'success') {
 	    		showSuccess(response.message);
-	    	} else {
-	    		if(!response.message == '') {
+
+	    	} else if(response.status === 'error') {
+
+	    		if(response.message.length !== 0) {
 	    			showError(response.message);
-	    		} else if(len > 0) {
+
+	    		} else if(response.hasOwnProperty('messages') && response.messages.length > 0) {
+	    			var len = response.messages.length,
+	    			    errorMessage = '';
+	    			    console.log(response.messages);
 	    			for(var i = 0; i < len; i++) {
-	    				showError(response.messages[i]);
+	    				errorMessage += '<div>' + response.messages[i] + '</div>';
 	    			}
+
+	    			showError(errorMessage);
 	    		} else {
 	    			console.error('Something wrong on the php side.');
 	    		}
+	    	} else if(response.status === 'debug') { // response.status === 'debug'
+	    		console.log(response);
 	    	}
 	    }
 		};

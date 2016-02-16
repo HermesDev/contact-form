@@ -5,50 +5,51 @@ add_filter('wp_mail_content_type', function(){
     return "text/html";
 });
 
-add_action('wp_ajax_get_contact_form_data', 'hermes_contact_form_process_form');
-add_action('wp_ajax_nopriv_get_contact_form_data', 'hermes_contact_form_process_form');
+add_action('wp_ajax_get_contact_form_data', 'hermesdev_process_form');
+add_action('wp_ajax_nopriv_get_contact_form_data', 'hermesdev_process_form');
+
 
 /**
- * hermes_contact_form_process_form  called by ajax from client-validation.js
+ * hermesdev_process_form  called by ajax from client-validation.js
  * @return array the feedback array with the keys 
  *     - status: error|success
  *     - message: string
  */
-function hermes_contact_form_process_form() {
+function hermesdev_process_form() {
 	$feedback = array(
 		'status' => 'error',
 		'message' => '',
 		'messages' => array()
 	);
 
-	if(!hermes_is_csrf_token_valid($_POST['csrf_token'])) {
+	if(!hermesdev_is_csrf_token_valid($_POST['csrf_token'])) {
 		$feedback['message'] = 'Wrong CSRF token.';
 		send_user_feedback($feedback);
 	}
 
-	if(!hermes_are_all_input_set($_POST)) {
+	if(!hermesdev_are_all_input_set($_POST)) {
 		$feedback['message'] = 'The form is incomplete.';
 		send_user_feedback($feedback);
 	}
 
-	$data = hermes_sanitize_form($_POST); // Sanitize and escape HTML
+	$data = hermesdev_sanitize_form($_POST); // Sanitize and escape HTML
 
-	if(!hermes_contact_is_form_valid($data, $feedback)) {
+	if(!hermesdev_is_form_valid($data, $feedback)) {
 		send_user_feedback($feedback);
 	}
 
-	hermes_contact_form_send_email($data, $feedback); // SEND EMAIL
+	hermesdev_send_email($data, $feedback); // SEND EMAIL
 
 	die(json_encode($feedback));
 }
 
 /**
- * hermes_is_csrf_token_valid check if the CSRF token is valid
+ * hermesdev_is_csrf_token_valid check if the CSRF token is valid
  * @param   string $csrf_token the CSRF token
  * @return  boolean            true if the CSRF is valid
  */
-function hermes_is_csrf_token_valid($csrf_token) {
-	if(!@isset($csrf_token) || !wp_verify_nonce($csrf_token, 'contact_form_settings_token')) {
+function hermesdev_is_csrf_token_valid($csrf_token) {
+	if(!@isset($csrf_token) || !wp_verify_nonce($csrf_token, 'contact_form_token')) {
 	  return false;
 	}
 
@@ -56,10 +57,10 @@ function hermes_is_csrf_token_valid($csrf_token) {
 }
 
 /**
- * hermes_are_all_input_set check for unset inputs
+ * hermesdev_are_all_input_set check for unset inputs
  * @param  array $input_data the $_POST array
  */
-function hermes_are_all_input_set($input_data) {
+function hermesdev_are_all_input_set($input_data) {
 	if(!@isset($input_data['name']) || 
 	!@isset($input_data['email']) || 
 	!@isset($input_data['message'])) {
@@ -70,11 +71,11 @@ function hermes_are_all_input_set($input_data) {
 }
 
 /**
- * hermes_contact_form_sanitize_form return a clean array with the inputs sanitized and properly escaped HTML
+ * hermesdev_sanitize_form return a clean array with the inputs sanitized and properly escaped HTML
  * @param   array  $input_data the $_POST array to sanitize
  * @return  array              the sanitize array
  */
-function hermes_contact_form_sanitize_form($input_data) {
+function hermesdev_sanitize_form($input_data) {
 	$data = array();
 
 	$data['name'] = sanitize_email(esc_html($input_data['name']));
@@ -85,16 +86,32 @@ function hermes_contact_form_sanitize_form($input_data) {
 }
 
 /**
- * hermes_contact_form_is_form_valid form validation
+ * hermesdev_is_form_valid form validation
  * @param  string   $input_data  the input_data
  * @param  array    $&feedback   a reference to the feedback object
  * @return Boolean               true if valid
  */
-function hermes_contact_form_is_form_valid($input_data, &$feedback) {
+function hermesdev_is_form_valid($input_data, &$feedback) {
 	$result = true;
 	$feedback['message'] = '';
 
-	if(!is_email($input_data['email'])) {
+	// TODO: add required fields
+	if(strlen($input_data['name']) === 0) {
+		$feedback['messages'][] = 'Name is required.';
+		$result = false;
+	}
+
+	if(strlen($input_data['email']) === 0) {
+		$feedback['messages'][] = 'Email is required.';
+		$result = false;
+	}
+
+	if(strlen($input_data['message']) <= 5) { // TODO: len?????
+		$feedback['messages'][] = 'Message is required.';
+		$result = false;
+	}
+
+	if(strlen($input_data['email']) !== 0 && !is_email($input_data['email'])) {
 		$feedback['messages'][] = 'Email address is invalid.';
 		$result = false;
 	}
@@ -118,12 +135,12 @@ function hermes_contact_form_is_form_valid($input_data, &$feedback) {
 }
 
 /**
- * hermes_contact_form_send_email Send the email
+ * hermesdev_send_email Send the email
  * @param  array    $data       the form data
  * @param  array    $&feedback  a reference to the feedback object
  * @return boolean              true if the email has been sent
  */
-function hermes_contact_form_send_email($data, &$feedback) {
+function hermesdev_send_email($data, &$feedback) {
 	$headers = 'From: ' . $data['name'] . ' <' . $data['email'] . '>' . "\r\n";
 	$to = "florian.goussin@gmail.com"; 
 	$subject = 'EML foundation website message'; 
