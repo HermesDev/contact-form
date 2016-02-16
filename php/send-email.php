@@ -78,9 +78,9 @@ function hermesdev_are_all_input_set($input_data) {
 function hermesdev_sanitize_form($input_data) {
 	$data = array();
 
-	$data['name'] = sanitize_email(esc_html($input_data['name']));
+	$data['name'] = sanitize_text_field(esc_html($input_data['name']));
 	$data['email'] = sanitize_email(esc_html($input_data['email']));
-	$data['message'] = sanitize_email(esc_html($input_data['message']));
+	$data['message'] = sanitize_text_field(esc_html($input_data['message']));
 
 	return $data;
 }
@@ -95,7 +95,6 @@ function hermesdev_is_form_valid($input_data, &$feedback) {
 	$result = true;
 	$feedback['message'] = '';
 
-	// TODO: add required fields
 	if(strlen($input_data['name']) === 0) {
 		$feedback['messages'][] = 'Name is required.';
 		$result = false;
@@ -106,7 +105,7 @@ function hermesdev_is_form_valid($input_data, &$feedback) {
 		$result = false;
 	}
 
-	if(strlen($input_data['message']) <= 5) { // TODO: len?????
+	if(strlen($input_data['message']) === 0) { // TODO: len?????
 		$feedback['messages'][] = 'Message is required.';
 		$result = false;
 	}

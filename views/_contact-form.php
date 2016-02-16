@@ -1,5 +1,5 @@
 <div class="hermes-contact-form-wrap">
-	<form id="hermes-contact-form" class="contact-form" novalidate>
+	<form id="hermes-contact-form" class="contact-form" autocomplete="off" novalidate>
 		<div class="name input-group">
 			<label for="visitor-name">Name</label>
 			<input id="visitor-name" type="text" placeholder="Your Name">

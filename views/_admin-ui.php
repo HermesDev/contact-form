@@ -12,7 +12,7 @@
  -->
 <div class="hermes-contact-form-admin-ui-wrap">
 	<h1>Contact form options</h1>
-	<form name="hermesContactFormAdminUi" novalidate>
+	<form name="hermesContactFormAdminUi" autocomplete="off" novalidate>
 		<div class="email-recipient-group">
 			<label for="email-recipient">Email recipient</label>
 			<input name="emailRecipient" type="text">

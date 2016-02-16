@@ -126,10 +126,10 @@
 		data.email = document.getElementById('visitor-email');
 		data.message = document.getElementById('visitor-message');
 
-    // client side form validation
-		// if(!isFormValid(data)) {
-		// 	return;
-		// }
+  	// client side form validation
+		if(!isFormValid(data)) {
+			return;
+		}
 
 		// xhr request
     var xhr = new XMLHttpRequest(),
