@@ -1,39 +1,40 @@
-
-input[type="text"],
-textarea,
-label {
-	display: block;
-	width: 100%;
-}
-
-input[type="text"],
-textarea {
-	display: block;
-	width: 100%;
-	padding: 0.5em;
-
-	&.error {
-		border-color: $error_color;
+.contact-form {
+	input[type="text"],
+	textarea,
+	label {
+		display: block;
+		width: 100%;
 	}
-}
 
-textarea {
-	resize: none;
-}
+	input[type="text"],
+	textarea {
+		display: block;
+		width: 100%;
+		padding: 0.5em;
 
-label {
-	padding-bottom: 0.2em
-}
+		&.error {
+			border-color: $error_color;
+		}
+	}
 
-.input-group {
-	padding-bottom: 1em;
-}
+	textarea {
+		resize: none;
+	}
 
-.output {
-	display: block;
+	label {
+		padding-bottom: 0.2em
+	}
 
-	&.error {
-		color: $error_color;
+	.input-group {
+		padding-bottom: 1em;
+	}
+
+	.output {
+		display: block;
+
+		&.error {
+			color: $error_color;
+		}
 	}
 }
 

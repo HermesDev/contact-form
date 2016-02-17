@@ -10,55 +10,9 @@
 	  return re.test(email);
 	}
 
-	var form = document.getElementById('hermes-contact-form');
-	var output = form.querySelector('.output');
-
-	/**
-	 * clearOutput clear the output
-	 */
-	var clearOuput = function() {
-		output.innerHTML = '';
-	}
-
-	/**
-	 * showError show error message
-	 * @param  string  message  the error message to display
-	 */
-	var showError = function(message, element) {
-		output.innerHTML += '<div>' + message + '</div>';
-	  output.style.display = 'block';
-
-	  if(output.className.indexOf('success') != -1) { // remove success class if present
-	  	output.className.replace('success', '');
-	  }
-
-	  if(output.className.indexOf('error') == -1) { // add error class if not present
-	  	output.className += ' error';
-	  }
-
-	  if(typeof element !== 'undefined') {
-	  	element.setAttribute('class', 'error');
-	  }
-	};
-
-	/**
-	 * showSuccess show success message
-	 * @param  string  message  the error message to display
-	 */
-	var showSuccess = function(message) {
-		output.innerHTML += '<div>' + message + '</div>';
-	  output.style.display = 'block';
-
-	  if(output.className.indexOf('error') != -1) { // remove error class if present
-	  	output.className.replace('error', '');
-	  }
-
-	  if(output.className.indexOf('success') == -1) { // add success class if not present
-	  	output.className += ' success';
-	  }
-
-	  output.setAttribute('class', 'success');
-	};
+	var form = document.getElementById('hermes-contact-form'),
+	    output = form.querySelector('.output');
+	    feedback = hermesdev.userFeedback(output);
 
 	/**
 	 * isFormValid form validation
@@ -69,25 +23,25 @@
 	 */
 	function isFormValid(data) {
 		var result = true;
-		clearOuput();
+		feedback.clearOuput();
 
 		if(data.name.value.length === 0) {
-      showError('Name is required.', data.name);
+      feedback.showError('Name is required.', data.name);
       result = false;
     }
 
     if(data.email.value.length === 0) {
-      showError('Email is required.', data.email);
+      feedback.showError('Email is required.', data.email);
       result = false;
     }
 
     if(data.email.value.length !== 0 && !isEmail(data.email.value)) {
-    	showError('Email is invalid.', data.email);
+    	feedback.showError('Email is invalid.', data.email);
       result = false;
     }
 
     if(data.message.value.length === 0) {
-      showError('Message is required.', data.message);
+      feedback.showError('Message is required.', data.message);
       result = false;
     }
 
@@ -97,17 +51,17 @@
     // 2nd step
 
     if(data.name.value.length > 200) {
-      showError('Name is too long.', data.name);
+      feedback.showError('Name is too long.', data.name);
       result = false;
     }
 
     if(data.email.value.length > 200) {
-      showError('Email is too long.', data.email);
+      feedback.showError('Email is too long.', data.email);
       result = false;
     }
 
     if(data.message.value.length > 5000) { // a full page
-      showError('Message is too long. Limited to 5000 characters.', data.message);
+      feedback.showError('Message is too long. Limited to 5000 characters.', data.message);
       result = false;
     }
 
@@ -147,37 +101,54 @@
 
 		xhr.onreadystatechange = function() { 
 	    if(xhr.readyState === 4 && xhr.status === 200) {
-	    	var response = JSON.parse(this.responseText);
-	    	clearOuput(); 
+				var response = JSON.parse(this.responseText);
 
 	    	if(response.status === 'success') {
-	    		showSuccess(response.message);
+	    		ajax_success(response);
 
-	    	} else if(response.status === 'error') {
-
-	    		if(response.message.length !== 0) {
-	    			showError(response.message);
-
-	    		} else if(response.hasOwnProperty('messages') && response.messages.length > 0) {
-	    			var len = response.messages.length,
-	    			    errorMessage = '';
-	    			    
-	    			for(var i = 0; i < len; i++) {
-	    				errorMessage += '<div>' + response.messages[i] + '</div>';
-	    			}
-
-	    			showError(errorMessage);
-	    		} else {
-	    			console.error('Something wrong on the php side.');
-	    		}
-	    	} else if(response.status === 'debug') { // response.status === 'debug'
-	    		console.log(response);
-	    	}
+		  	} else if(response.status === 'error') {
+		  		ajax_error(response);
+		  		
+		  	} else if(response.status === 'debug') { 
+		  		console.log(response);
+		  	}
 	    }
 		};
 
 		xhr.send(params);
-
 	};
+
+	/**
+	 * ajax_success response status: success
+	 * @param  object response the response object
+	 */
+	function ajax_success(response) {
+  	feedback.clearOuput(); 
+  	feedback.showSuccess(response.message);
+	}
+
+	/**
+	 * ajax_error response status: error
+	 * @param  object response the response object
+	 */
+	function ajax_error(response) {
+		feedback.clearOuput();
+
+		if(response.message.length !== 0) {
+			feedback.showError(response.message);
+
+		} else if(response.hasOwnProperty('messages') && response.messages.length > 0) {
+			var errorLen = response.messages.length,
+			    errorMessage = '';
+			    
+			for(var i = 0; i < errorLen; i++) {
+				errorMessage += '<div>' + response.messages[i] + '</div>';
+			}
+
+			feedback.showError(errorMessage);
+		} else {
+			console.error('Something wrong on the php side.');
+		}
+	}
 	
 })();

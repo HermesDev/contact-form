@@ -1,7 +1,5 @@
 <?php
 
-// namespace hermes_dev\contact_form\process_form;
-
 new Contact_Form;
 
 /**
@@ -162,5 +160,3 @@ class Contact_Form {
 		}
 	}
 }
-
-?>

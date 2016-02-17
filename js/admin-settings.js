@@ -40,18 +40,22 @@
 		event.preventDefault();
 		
 		var form = event.srcElement;
-    var output = form.querySelector('.output');
+        output = form.querySelector('.output'),
+        feedback = hermesdev.userFeedback(output);;
 
-    output.innerHTML = '';
+    feedback.clearOuput();
+
     if (errors.length > 0) {
-      for (var i = 0, errorLength = errors.length; i < errorLength; i++) {
-      	output.innerHTML += '<div>' + errors[i].message + '<div/>'
-      }
-      output.className += ' error';
-      console.log('errors');
-    } else {
-      output.className += ' success';
+      var errorLen = errors.length,
+			    errorMessage = '';
+			    
+			for(var i = 0; i < errorLen; i++) {
+				errorMessage += '<div>' + response.messages[i] + '</div>';
+			}
 
+			feedback.showError(errorMessage);
+
+    } else {
       sendData(event.path[0]);
     }
 	});
@@ -61,7 +65,6 @@
 	 * @param  element form the form element
 	 */
 	function sendData(form) {
-		console.log(form);
 	  var xhr = new XMLHttpRequest(),
 	      url = 'admin-ajax.php',
 	      params = '';
@@ -81,13 +84,57 @@
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
 		xhr.onreadystatechange = function() { 
-	    if(xhr.readyState == 4 && xhr.status == 200) {
-	    	console.log(this.responseText);
-	    	// showSuccess(this.responseText);
+	    if(xhr.readyState === 4 && xhr.status === 200) {
+				var response = JSON.parse(this.responseText);
+
+	    	if(response.status === 'success') {
+	    		ajax_success(response);
+
+		  	} else if(response.status === 'error') {
+		  		ajax_error(response);
+		  		
+		  	} else if(response.status === 'debug') { 
+		  		console.log(response);
+		  	}
 	    }
 		};
 		
 		xhr.send(params);
+	}
+
+	/**
+	 * ajax_success response status: success
+	 * @param  object response the response object
+	 */
+	function ajax_success(response) {
+  	feedback.clearOuput(); 
+  	feedback.showSuccess(response.message);
+	}
+
+	/**
+	 * ajax_error response status: error
+	 * @param  object response the response object
+	 */
+	function ajax_error(response) {
+		feedback.clearOuput();
+
+		console.log(response);
+
+		if(response.message.length !== 0) {
+			feedback.showError(response.message);
+
+		} else if(response.hasOwnProperty('messages') && response.messages.length > 0) {
+			var errorLen = response.messages.length,
+			    errorMessage = '';
+			    
+			for(var i = 0; i < errorLen; i++) {
+				errorMessage += '<div>' + response.messages[i] + '</div>';
+			}
+
+			feedback.showError(errorMessage);
+		} else {
+			console.error('Something wrong on the php side.');
+		}
 	}
 	
 })();
