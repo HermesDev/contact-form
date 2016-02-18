@@ -42,12 +42,10 @@ class Admin_Settings {
 
 		$this->register_settings(); 
 		if(!$this->save_settings($data, $feedback)) {
-			debug('test');
-			$feedback['status'] = 'debug'; // this feedback is ONLY for debug for the dev time
+			$feedback['message'] = 'No changes detected.';
 			send_user_feedback($feedback);	
 		}
 
-		$feedback['status'] = 'success';
 		send_user_feedback($feedback);
 	}
 
@@ -203,6 +201,7 @@ class Admin_Settings {
 	 * @return  boolean             return true if the database has been successfully updated
 	 */
 	function save_settings($data, &$feedback) {
+		$feedback['status'] = 'success'; // always a success from here
 		$result = false;
 
 		if(update_option(EMAIL_RECIPIENT_OPTION, $data[EMAIL_RECIPIENT_OPTION])) {

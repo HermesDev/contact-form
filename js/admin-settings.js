@@ -11,7 +11,7 @@
 	}, {
     name: 'subject',
     display: 'Subject',
-    rules: 'alpha_numeric|max_length[1000]'
+    rules: 'max_length[1000]'
 	}, {
     name: 'message_length',
     display: 'Message Length',
@@ -19,19 +19,19 @@
 	}, {
     name: 'success_class',
     display: 'Success Class',
-    rules: 'alpha_numeric|max_length[200]'
+    rules: 'max_length[200]'
 	}, {
     name: 'error_class',
     display: 'Error Class',
-    rules: 'alpha_numeric|max_length[200]'
+    rules: 'max_length[200]'
 	}, {
     name: 'form_incomplete_message',
     display: 'Form Incomplete Message',
-    rules: 'alpha_numeric|max_length[1000]'
+    rules: 'max_length[1000]'
 	}, {
     name: 'send_email_success_message',
     display: 'Send Email Success Message',
-    rules: 'alpha_numeric|max_length[1000]'
+    rules: 'max_length[1000]'
 	}, {
     name: 'send_email_error_message',
     display: 'Send Email Error Message',
@@ -41,7 +41,7 @@
 		
 		var form = event.srcElement;
         output = form.querySelector('.output'),
-        feedback = hermesdev.userFeedback(output, 'admin');;
+        feedback = hermesdev.userFeedback(output, 'admin');
 
     console.log('debug start');
 		console.log(errors);

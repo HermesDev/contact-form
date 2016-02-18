@@ -13,7 +13,6 @@
 		} 
 	}
 
-
 	/**
 	 * clearOutput clear the output DOM
 	 */
@@ -26,20 +25,12 @@
 	 * @param  string  message  the error message to display
 	 */
 	UserFeedback.prototype.showError = function(message, element) {
-		if(message.indexOf('<div>') !== -1) {
-			message += '<div>' + message + '</div>';
-
-			if(this.output.className.indexOf('error') == -1) { // add error class if not present
-		  	this.output.className += ' error';
-		  }
+		if(message.indexOf('<div') === -1) {
+			message = '<div class="error">' + message + '</div>';
 		}
 
-		this.output.innerHTML += '<div>' + message + '</div>';
+		this.output.innerHTML = message;
 	  this.output.style.display = 'block';
-
-	  if(this.output.className.indexOf(this.successClassName) != -1) { // remove success class if present
-	  	this.output.className.replace(this.successClassName, '');
-	  }
 
 	  if(typeof element !== 'undefined') {
 	  	element.setAttribute('class', 'error');
@@ -51,21 +42,12 @@
 	 * @param  string  message  the error message to display
 	 */
 	UserFeedback.prototype.showSuccess = function(message) {
-		if(message.indexOf('<div>') !== -1) {
-			message += '<div>' + message + '</div>';
-
-			if(this.output.className.indexOf(this.successClassName) == -1) { // add success class if not present
-		  	this.output.className += ' ' + this.successClassName;
-		  }
+		if(message.indexOf('<div') === -1) {
+			message = '<div class="' + this.successClassName + '">' + message + '</div>';
 		}
 
-		this.output.innerHTML += '<div>' + message + '</div>';
-
+		this.output.innerHTML = message;
 	  this.output.style.display = 'block';
-
-	  if(this.output.className.indexOf('error') != -1) { // remove error class if present
-	  	this.output.className.replace('error', '');
-	  }
 	};
 
 	if(!window.hasOwnProperty('hermesdev')) {
@@ -73,8 +55,8 @@
 		window.hermesdev = hermesdev;
 	}
 
-	window.hermesdev.userFeedback = function(output) { // Factory
-		return new UserFeedback(output);
+	window.hermesdev.userFeedback = function(output, side) { // Factory
+		return new UserFeedback(output, side);
 	};
 
 })(window);
