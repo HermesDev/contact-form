@@ -2,13 +2,13 @@
 <div class="hermes-contact-form-admin-ui-wrap">
 	<h1>Contact form options</h1>
 	<form name="hermesContactFormAdminUi" autocomplete="off" novalidate>
-		<div class="email-recipient-group">
-			<label for="email-recipient">Email recipient</label>
-			<input name="email_recipient" id="email-recipient" type="text" value="<?php echo get_option('email_recipient'); ?>">
+		<div class="recipient-group">
+			<label for="recipient">Recipient</label>
+			<input name="recipient" id="recipient" type="text" value="<?php echo get_option('email_recipient'); ?>">
 		</div>
-		<div class="email-subject-group">
-			<label for="email-subject">Email subject</label>
-			<input name="email_subject" id="email-subject" type="text" value="<?php echo get_option('email_subject'); ?>">
+		<div class="subject-group">
+			<label for="subject">Subject</label>
+			<input name="subject" id="subject" type="text" value="<?php echo get_option('email_subject'); ?>">
 		</div>
 		<div class="message-length-group">
 			<label for="message-length">Message max length</label>

@@ -5,12 +5,12 @@
 	 * @callback calls sendData callback on success
 	 */
   new FormValidator('hermesContactFormAdminUi', [{
-    name: 'email_recipient',
-    display: 'Email Recipient',
+    name: 'recipient',
+    display: 'Recipient',
     rules: 'valid_email|max_length[200]'
 	}, {
-    name: 'email_subject',
-    display: 'Email Subject',
+    name: 'subject',
+    display: 'Subject',
     rules: 'alpha_numeric|max_length[1000]'
 	}, {
     name: 'message_length',
@@ -41,18 +41,22 @@
 		
 		var form = event.srcElement;
         output = form.querySelector('.output'),
-        feedback = hermesdev.userFeedback(output);;
+        feedback = hermesdev.userFeedback(output, 'admin');;
+
+    console.log('debug start');
+		console.log(errors);
+		console.log(errors.length);
 
     feedback.clearOuput();
 
-    if (errors.length > 0) {
+    if(errors.length > 0) {
       var errorLen = errors.length,
 			    errorMessage = '';
 			    
 			for(var i = 0; i < errorLen; i++) {
-				errorMessage += '<div>' + response.messages[i] + '</div>';
+				errorMessage += '<div class="error">' + errors[i].message + '</div>';
 			}
-
+    	
 			feedback.showError(errorMessage);
 
     } else {
@@ -65,12 +69,13 @@
 	 * @param  element form the form element
 	 */
 	function sendData(form) {
+console.log(form);
 	  var xhr = new XMLHttpRequest(),
 	      url = 'admin-ajax.php',
 	      params = '';
 
-	  params += 'email_recipient=' + form.querySelector('.email-recipient-group > input').value;
-	  params += '&email_subject=' + form.querySelector('.email-subject-group > input').value;
+	  params += 'recipient=' + form.querySelector('.recipient-group > input').value;
+	  params += '&subject=' + form.querySelector('.subject-group > input').value;
 	  params += '&message_length=' + form.querySelector('.message-length-group > input').value;
 	  params += '&success_class=' + form.querySelector('.success-class-group > input').value;
 	  params += '&error_class=' + form.querySelector('.error-class-group > input').value;
@@ -108,7 +113,22 @@
 	 */
 	function ajax_success(response) {
   	feedback.clearOuput(); 
-  	feedback.showSuccess(response.message);
+
+  	if(response.message.length !== 0) {
+			feedback.showSuccess(response.message);
+
+		} else if(response.hasOwnProperty('messages') && response.messages.length > 0) {
+			var errorLen = response.messages.length,
+			    errorMessage = '';
+			    
+			for(var i = 0; i < errorLen; i++) {
+				errorMessage += '<div class="updated">' + response.messages[i] + '</div>';
+			}
+
+			feedback.showSuccess(errorMessage);
+		} else {
+			console.error('Something wrong on the php side.');
+		}
 	}
 
 	/**
@@ -117,8 +137,6 @@
 	 */
 	function ajax_error(response) {
 		feedback.clearOuput();
-
-		console.log(response);
 
 		if(response.message.length !== 0) {
 			feedback.showError(response.message);
