@@ -25,9 +25,7 @@
 	 * @param  string  message  the error message to display
 	 */
 	UserFeedback.prototype.showError = function(message, element) {
-		console.log('error debug');
 		if(message.indexOf('<div') === -1) {
-			console.log('error debug2');
 			message = '<div class="error">' + message + '</div>';
 		}
 

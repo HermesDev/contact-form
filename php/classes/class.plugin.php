@@ -12,6 +12,8 @@ class Plugin {
     add_action ('init', array(__CLASS__, 'init_tasks'));
     add_action('admin_init', array(__CLASS__, 'admin_init_tasks'));
     add_action('wp_footer', array(__CLASS__, 'wp_footer_tasks'));
+
+    add_shortcode('hermes_contact_form', array(__CLASS__, 'show_contact_form_view')); // Contact form
     // add_action('admin_menu', array(__CLASS__, 'wp_admin_menu_tasks'));
   }
 
@@ -20,7 +22,6 @@ class Plugin {
    */
   public static function init_tasks() {
   	wp_enqueue_style('hermesdev_contact_form_css', WEBSITE_SNAPSHOT__PLUGIN_URL.'css/style.css');
-    add_shortcode('hermes_contact_form', array(__CLASS__, 'show_contact_form_view')); // Contact form shortcode
     wp_enqueue_script('validation_js', 
       WEBSITE_SNAPSHOT__PLUGIN_URL.'node_modules/validate-js/validate.min.js', null, null, false);
     wp_enqueue_script('user_feedback_js', WEBSITE_SNAPSHOT__PLUGIN_URL.'js/user-feedback.js', 

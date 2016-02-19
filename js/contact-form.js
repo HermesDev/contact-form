@@ -10,11 +10,15 @@
 	  return re.test(email);
 	}
 
-	var form = document.getElementById('hermes-contact-form'),
-	    submit = form.querySelector('button');
-	    output = form.querySelector('.output');
-	    feedback = hermesdev.userFeedback(output);
-console.log(form);
+	var formWrapper = document.getElementsByClassName('hermes-contact-form-wrap');
+
+	// onsubmit
+	// loop for misuse of the plugin (e.g. bootstrap hidden)
+	for (var i = 0; i < formWrapper.length; i++) {
+		var form = formWrapper[i].querySelector('#hermes-contact-form');
+		form.onsubmit = submitForm;
+	}
+
 	/**
 	 * isFormValid form validation
 	 * @param  string  name     the name
@@ -22,7 +26,7 @@ console.log(form);
 	 * @param  string  message 	the message
 	 * @return Boolean          true if valid
 	 */
-	function isFormValid(data) {
+	function isFormValid(data, feedback) {
 		var result = true;
 		feedback.clearOuput();
 
@@ -69,26 +73,27 @@ console.log(form);
     return result;
 	}
 
+
 	/**
-	 * onsubmit form submission
+	 * submitForm Form submission
+	 * @param  object event The event object
 	 */
-	// form.onsubmit = function(event) {
-  form.onsubmit = function(event) {
-		console.log('submission');
+  function submitForm(event) {
 		event.preventDefault();
+		var output = this.querySelector('.output'), 
+		    feedback = hermesdev.userFeedback(output);
 
 		var data = {};
 
-		data.name = document.getElementById('visitor-name');
-		data.email = document.getElementById('visitor-email');
-		data.message = document.getElementById('visitor-message');
+		data.name = this.querySelector('#visitor-name');
+		data.email = this.querySelector('#visitor-email');
+		data.message = this.querySelector('#visitor-message');
 
   	// client side form validation
-		if(!isFormValid(data)) {
-console.log('before');
+		if(!isFormValid(data, feedback)) {
 			return;
 		}
-console.log('after');
+		
 		// xhr request
     var xhr = new XMLHttpRequest(),
         url = '../wp-admin/admin-ajax.php',
@@ -108,10 +113,10 @@ console.log('after');
 				var response = JSON.parse(this.responseText);
 
 	    	if(response.status === 'success') {
-	    		ajax_success(response);
+	    		ajax_success(response, feedback);
 
 		  	} else if(response.status === 'error') {
-		  		ajax_error(response);
+		  		ajax_error(response, feedback);
 		  		
 		  	} else if(response.status === 'debug') { 
 		  		console.log(response);
@@ -126,7 +131,7 @@ console.log('after');
 	 * ajax_success response status: success
 	 * @param  object response the response object
 	 */
-	function ajax_success(response) {
+	function ajax_success(response, feedback) {
   	feedback.clearOuput(); 
   	feedback.showSuccess(response.message);
 	}
@@ -135,7 +140,7 @@ console.log('after');
 	 * ajax_error response status: error
 	 * @param  object response the response object
 	 */
-	function ajax_error(response) {
+	function ajax_error(response, feedback) {
 		feedback.clearOuput();
 
 		if(response.message.length !== 0) {
