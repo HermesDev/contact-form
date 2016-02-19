@@ -151,7 +151,7 @@
           errorMessage = '';
           
       for(var i = 0; i < errorLen; i++) {
-        errorMessage += '<div>' + response.messages[i] + '</div>';
+        errorMessage += '<div class="error">' + response.messages[i] + '</div>';
       }
 
       feedback.showError(errorMessage);
