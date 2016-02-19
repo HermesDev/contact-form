@@ -5,7 +5,7 @@
  * @param  array  $feedback  the feedback array
  */
 function send_user_feedback($feedback) {
-	die(json_encode($feedback));
+  die(json_encode($feedback));
 }
 
 /**
@@ -13,10 +13,10 @@ function send_user_feedback($feedback) {
  * @param  array  $message  the feedback array
  */
 function debug($message) {
-	$feedback = array(
-		'status' => 'debug',
-		'message' => $message
-	);
+  $feedback = array(
+    'status' => 'debug',
+    'message' => $message
+  );
 
-	die(json_encode($feedback));
+  die(json_encode($feedback));
 }

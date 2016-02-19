@@ -27,19 +27,19 @@ function buildCss() {
 };
 
 function buildMinCss() {
-	return gulp.src('./css/style.css')
+  return gulp.src('./css/style.css')
         .pipe(nano())
         .pipe(rename({ extname: '.min.css' }))
         .pipe(gulp.dest('./css/'))
 }
 
 function watchCss() {
-	gulp.watch('./scss', ['build-css']);
+  gulp.watch('./scss', ['build-css']);
 }
 
 function cleanDist() {
-	return gulp.src('./css/style.css', { read: false })
-   			.pipe(rimraf());
+  return gulp.src('./css/style.css', { read: false })
+        .pipe(rimraf());
 }
 
 function lintJs() {
