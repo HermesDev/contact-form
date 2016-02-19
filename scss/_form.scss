@@ -1,35 +1,35 @@
 .contact-form {
-	input[type="text"],
-	textarea,
-	label {
-		display: block;
-		width: 100%;
-	}
+  input[type="text"],
+  textarea,
+  label {
+    display: block;
+    width: 100%;
+  }
 
-	input[type="text"],
-	textarea {
-		padding: 0.5em;
-	}
+  input[type="text"],
+  textarea {
+    padding: 0.5em;
+  }
 
-	textarea {
-		resize: none;
-	}
+  textarea {
+    resize: none;
+  }
 
-	label {
-		padding-bottom: 0.2em
-	}
+  label {
+    padding-bottom: 0.2em
+  }
 
-	.input-group {
-		padding-bottom: 1em;
-	}
+  .input-group {
+    padding-bottom: 1em;
+  }
 
-	.output {
-		display: block;
+  .output {
+    display: block;
 
-		.error {
-			color: $error_color;
-		}
-	}
+    .error {
+      color: $error_color;
+    }
+  }
 }
 
 
