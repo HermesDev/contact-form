@@ -8,13 +8,7 @@
 
 	input[type="text"],
 	textarea {
-		display: block;
-		width: 100%;
 		padding: 0.5em;
-
-		&.error {
-			border-color: $error_color;
-		}
 	}
 
 	textarea {
@@ -32,7 +26,7 @@
 	.output {
 		display: block;
 
-		&.error {
+		.error {
 			color: $error_color;
 		}
 	}

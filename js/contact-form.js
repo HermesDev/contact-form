@@ -11,9 +11,10 @@
 	}
 
 	var form = document.getElementById('hermes-contact-form'),
+	    submit = form.querySelector('button');
 	    output = form.querySelector('.output');
 	    feedback = hermesdev.userFeedback(output);
-
+console.log(form);
 	/**
 	 * isFormValid form validation
 	 * @param  string  name     the name
@@ -71,7 +72,9 @@
 	/**
 	 * onsubmit form submission
 	 */
-	form.onsubmit = function(event) {
+	// form.onsubmit = function(event) {
+  form.onsubmit = function(event) {
+		console.log('submission');
 		event.preventDefault();
 
 		var data = {};
@@ -82,9 +85,10 @@
 
   	// client side form validation
 		if(!isFormValid(data)) {
+console.log('before');
 			return;
 		}
-
+console.log('after');
 		// xhr request
     var xhr = new XMLHttpRequest(),
         url = '../wp-admin/admin-ajax.php',

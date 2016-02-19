@@ -7,23 +7,39 @@ Plugin::init();
  */
 class Plugin {
   public static function init() {
-  	add_action ('init', array(__CLASS__, 'init_tasks'));
-		add_action('admin_init', array(__CLASS__, 'admin_init_tasks'));
-		add_action('wp_footer', array(__CLASS__, 'wp_footer_tasks'));
-		add_action('admin_menu', array(__CLASS__, 'wp_admin_menu_tasks'));
+    add_action('wp_enqueue_styles', array(__CLASS__, 'enqueue_styles')); 
+    add_action('wp_enqueue_scripts', array(__CLASS__, 'enqueue_scripts')); 
+    add_action ('init', array(__CLASS__, 'init_tasks'));
+    add_action('admin_init', array(__CLASS__, 'admin_init_tasks'));
+    add_action('wp_footer', array(__CLASS__, 'wp_footer_tasks'));
+    // add_action('admin_menu', array(__CLASS__, 'wp_admin_menu_tasks'));
   }
 
   /**
    * init_tasks Tasks related to WordPress init action
    */
   public static function init_tasks() {
-  	wp_enqueue_script('validation_js', 
-  		WEBSITE_SNAPSHOT__PLUGIN_URL.'node_modules/validate-js/validate.min.js', null, null, false);
-  	wp_enqueue_script('user_feedback_js', WEBSITE_SNAPSHOT__PLUGIN_URL.'js/user-feedback.js', 
-  		null, null, false);
   	wp_enqueue_style('hermesdev_contact_form_css', WEBSITE_SNAPSHOT__PLUGIN_URL.'css/style.css');
+    add_shortcode('hermes_contact_form', array(__CLASS__, 'show_contact_form_view')); // Contact form shortcode
+    wp_enqueue_script('validation_js', 
+      WEBSITE_SNAPSHOT__PLUGIN_URL.'node_modules/validate-js/validate.min.js', null, null, false);
+    wp_enqueue_script('user_feedback_js', WEBSITE_SNAPSHOT__PLUGIN_URL.'js/user-feedback.js', 
+      null, null, false);
 
-  	add_shortcode('hermes_contact_form', array(__CLASS__, 'show_contact_form_view')); // Contact form shortcode
+  }
+
+  /**
+   * enqueue_styles enqueue the styles
+   */
+  // public static function enqueue_styles() {
+  // }
+
+  /**
+   * enqueue_scripts enqueue the scripts
+   */
+  public static function enqueue_scripts() {
+    wp_enqueue_script('hermesdev_contact_form_js', WEBSITE_SNAPSHOT__PLUGIN_URL.'js/contact-form.js', 
+      null, null, true);
   }
 
   /**
