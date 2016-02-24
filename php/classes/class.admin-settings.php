@@ -161,36 +161,36 @@ class Admin_Settings {
    * register_settings create the the table fields if needed
    */
   function register_settings() {
-    if(!get_option(EMAIL_RECIPIENT_OPTION)) {
-      register_setting(PLUGIN_PREFIX, EMAIL_RECIPIENT_OPTION);
+    if(!get_optionDB__(EMAIL_RECIPIENT_OPTION)) {
+      register_setting(PLUGIN_PREFIX, DB__EMAIL_RECIPIENT_OPTION);
     }
 
-    if(!get_option(EMAIL_SUBJECT_OPTION)) {
-      register_setting(PLUGIN_PREFIX, EMAIL_SUBJECT_OPTION);
+    if(!get_option(DB__EMAIL_SUBJECT_OPTION)) {
+      register_setting(PLUGIN_PREFIX, DB__EMAIL_SUBJECT_OPTION);
     }
 
-    if(!get_option(MESSAGE_LENGTH_OPTION)) {
-      register_setting(PLUGIN_PREFIX, MESSAGE_LENGTH_OPTION);
+    if(!get_option(DB__MESSAGE_LENGTH_OPTION)) {
+      register_setting(PLUGIN_PREFIX, DB__MESSAGE_LENGTH_OPTION);
     }
 
-    if(!get_option(SUCCESS_CLASS_OPTION)) {
-      register_setting(PLUGIN_PREFIX, SUCCESS_CLASS_OPTION);
+    if(!get_option(DB__SUCCESS_CLASS_OPTION)) {
+      register_setting(PLUGIN_PREFIX, DB__SUCCESS_CLASS_OPTION);
     }
 
-    if(!get_option(ERROR_CLASS_OPTION)) {
-      register_setting(PLUGIN_PREFIX, ERROR_CLASS_OPTION);
+    if(!get_option(DB__ERROR_CLASS_OPTION)) {
+      register_setting(PLUGIN_PREFIX, DB__ERROR_CLASS_OPTION);
     }
 
-    if(!get_option(FORM_INCOMPLETE_MESSAGE_OPTION)) {
-      register_setting(PLUGIN_PREFIX, FORM_INCOMPLETE_MESSAGE_OPTION);
+    if(!get_option(DB__FORM_INCOMPLETE_MESSAGE_OPTION)) {
+      register_setting(PLUGIN_PREFIX, DB__FORM_INCOMPLETE_MESSAGE_OPTION);
     }
 
-    if(!get_option(SEND_EMAIL_SUCCESS_MESSAGE_OPTION)) {
-      register_setting(PLUGIN_PREFIX, SEND_EMAIL_SUCCESS_MESSAGE_OPTION);
+    if(!get_option(DB__SEND_EMAIL_SUCCESS_MESSAGE_OPTION)) {
+      register_setting(PLUGIN_PREFIX, DB__SEND_EMAIL_SUCCESS_MESSAGE_OPTION);
     }
 
-    if(!get_option(SEND_EMAIL_ERROR_MESSAGE_OPTION)) {
-      register_setting(PLUGIN_PREFIX, SEND_EMAIL_ERROR_MESSAGE_OPTION);
+    if(!get_option(DB__SEND_EMAIL_ERROR_MESSAGE_OPTION)) {
+      register_setting(PLUGIN_PREFIX, DB__SEND_EMAIL_ERROR_MESSAGE_OPTION);
     }
   }
 
@@ -204,42 +204,42 @@ class Admin_Settings {
     $feedback['status'] = 'success'; // always a success from here
     $result = false;
 
-    if(update_option(EMAIL_RECIPIENT_OPTION, $data[EMAIL_RECIPIENT_OPTION])) {
+    if(update_option(DB__EMAIL_RECIPIENT_OPTION, $data[EMAIL_RECIPIENT_OPTION])) {
       $feedback['messages'][] = EMAIL_RECIPIENT_OPTION.' has been successfully updated.';
       $result = true;
     }
 
-    if(update_option(EMAIL_SUBJECT_OPTION, $data[EMAIL_SUBJECT_OPTION])) {
+    if(update_option(DB__EMAIL_SUBJECT_OPTION, $data[EMAIL_SUBJECT_OPTION])) {
       $feedback['messages'][] = EMAIL_SUBJECT_OPTION.' has been successfully updated.';
       $result = true;
     }
 
-    if(update_option(MESSAGE_LENGTH_OPTION, $data[MESSAGE_LENGTH_OPTION])) {
+    if(update_option(DB__MESSAGE_LENGTH_OPTION, $data[MESSAGE_LENGTH_OPTION])) {
       $feedback['messages'][] = MESSAGE_LENGTH_OPTION.' has been successfully updated.';
       $result = true;
     }
 
-    if(update_option(SUCCESS_CLASS_OPTION, $data[SUCCESS_CLASS_OPTION])) {
+    if(update_option(DB__SUCCESS_CLASS_OPTION, $data[SUCCESS_CLASS_OPTION])) {
       $feedback['messages'][] = SUCCESS_CLASS_OPTION.' has been successfully updated.';
       $result = true;
     }
 
-    if(update_option(ERROR_CLASS_OPTION, $data[ERROR_CLASS_OPTION])) {
+    if(update_option(DB__ERROR_CLASS_OPTION, $data[ERROR_CLASS_OPTION])) {
       $feedback['messages'][] = ERROR_CLASS_OPTION.' has been successfully updated.';
       $result = true;
     }
 
-    if(update_option(FORM_INCOMPLETE_MESSAGE_OPTION, $data[FORM_INCOMPLETE_MESSAGE_OPTION])) {
+    if(update_option(DB__FORM_INCOMPLETE_MESSAGE_OPTION, $data[FORM_INCOMPLETE_MESSAGE_OPTION])) {
       $feedback['messages'][] = FORM_INCOMPLETE_MESSAGE_OPTION.' has been successfully updated.';
       $result = true;
     }
 
-    if(update_option(SEND_EMAIL_SUCCESS_MESSAGE_OPTION, $data[SEND_EMAIL_SUCCESS_MESSAGE_OPTION])) {
+    if(update_option(DB__SEND_EMAIL_SUCCESS_MESSAGE_OPTION, $data[SEND_EMAIL_SUCCESS_MESSAGE_OPTION])) {
       $feedback['messages'][] = SEND_EMAIL_SUCCESS_MESSAGE_OPTION.' has been successfully updated.';
       $result = true;
     }
 
-    if(update_option(SEND_EMAIL_ERROR_MESSAGE_OPTION, $data[SEND_EMAIL_ERROR_MESSAGE_OPTION])) {
+    if(update_option(DB__SEND_EMAIL_ERROR_MESSAGE_OPTION, $data[SEND_EMAIL_ERROR_MESSAGE_OPTION])) {
       $feedback['messages'][] = SEND_EMAIL_ERROR_MESSAGE_OPTION.' has been successfully updated.';
       $result = true;
     }
