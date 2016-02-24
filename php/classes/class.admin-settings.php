@@ -161,7 +161,7 @@ class Admin_Settings {
    * register_settings create the the table fields if needed
    */
   function register_settings() {
-    if(!get_optionDB__(EMAIL_RECIPIENT_OPTION)) {
+    if(!get_option(DB__EMAIL_RECIPIENT_OPTION)) {
       register_setting(PLUGIN_PREFIX, DB__EMAIL_RECIPIENT_OPTION);
     }
 

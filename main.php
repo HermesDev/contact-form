@@ -16,6 +16,7 @@ include 'php/classes/class.contact-form.php';
 include 'php/classes/class.admin-settings.php';
 
 include 'php/_constants.php';
+include 'php/_globals.php';
 include 'php/utils.php';
 
 ?>

@@ -34,7 +34,8 @@ class Contact_Form {
     }
 
     if(!$this->are_all_input_set($_POST)) {
-      $feedback['message'] = 'The form is incomplete.';
+      $form_incomplete_message = get_option(DB__FORM_INCOMPLETE_MESSAGE_OPTION);
+      $feedback['message'] = !!$form_incomplete_message ? $form_incomplete_message : 'The form is incomplete.'; // TODO: chech if empty string is not taken
       send_user_feedback($feedback);
     }
 
@@ -47,6 +48,14 @@ class Contact_Form {
     $this->send_email($data, $feedback); 
 
     die(json_encode($feedback));
+  }
+
+  /**
+   * fetch_settings Get required settings
+   * @return array list of settings
+   */
+  function fetch_settings() {
+
   }
 
   /**
@@ -98,6 +107,8 @@ class Contact_Form {
    * @return Boolean               true if valid
    */
   function is_form_valid($input_data, &$feedback) {
+    $message_len_max = get_option(DB__MESSAGE_LENGTH_OPTION);
+    $message_len_max = !!$message_len_max ? $message_len_max : MESSAGE__LEN_MAX; // TODO: chech if empty string is not taken
     $result = true;
     $feedback['message'] = '';
 
@@ -111,7 +122,7 @@ class Contact_Form {
       $result = false;
     }
 
-    if(strlen($input_data['message']) === 0) { // TODO: len?????
+    if(strlen($input_data['message']) === 0) { 
       $feedback['messages'][] = 'Message is required.';
       $result = false;
     }
@@ -131,7 +142,7 @@ class Contact_Form {
       $result = false;
     }
 
-    if(strlen($input_data['message']) > MESSAGE__LEN_MAX) {
+    if(strlen($input_data['message']) > $message_len_max) {
       $feedback['messages'][] = 'Message is too long.';
       $result = false;
     }
@@ -146,17 +157,28 @@ class Contact_Form {
    * @return boolean              true if the email has been sent
    */
   function send_email($data, &$feedback) {
+    $to_email = get_option(DB__EMAIL_RECIPIENT_OPTION);
+    $subject = get_option(DB__EMAIL_SUBJECT_OPTION);
+    $success_message = get_option(DB__SEND_EMAIL_SUCCESS_MESSAGE_OPTION);
+    $error_message = get_option(DB__SEND_EMAIL_ERROR_MESSAGE_OPTION);
+
+    if(!$to_email) {
+      // TODO: get the default email address from WP settings page
+      // if none is found send an error to the end user
+      $feedback['message'][] = 'No email address is available to send the contact form.';
+    }
+
     $headers = 'From: ' . $data['name'] . ' <' . $data['email'] . '>' . "\r\n";
-    $to = "florian.goussin@gmail.com"; 
-    $subject = 'EML foundation website message'; 
+    $to = !!$to_email ? $to_email : "florian.goussin@gmail.com"; // TODO: get rid of the hardcoded test email address
+    $subject = !!$subject ? $subject : 'EML foundation website message'; 
     $data['message'] = '<p>' . $data['message'] . '</p><p>' . $data['name'] . '</p>';
 
     // Send the email
     if(wp_mail($to, $subject, $data['message'], $headers)) {
       $feedback['status'] = 'success';
-      $feedback['message'] = 'Message has been sent succesfully!';
+      $feedback['message'] = !!$success_message ? $success_message : 'Message has been sent succesfully!';
     } else {
-      $feedback['message'] = 'Impossible to send the message';
+      $feedback['message'] = !!$error_message ? $error_message : 'Impossible to send the message';
     }
   }
 }
