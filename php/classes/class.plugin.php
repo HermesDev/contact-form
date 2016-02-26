@@ -7,7 +7,7 @@ Plugin::init();
  */
 class Plugin {
   public static function init() {
-    self::compile_contact_form_js(); // First, compile the js with the right data
+    // self::compile_contact_form_js(); // First, compile the js with the right data
     add_action('wp_enqueue_styles', array(__CLASS__, 'enqueue_styles')); 
     add_action('wp_enqueue_scripts', array(__CLASS__, 'enqueue_scripts')); 
     add_action ('init', array(__CLASS__, 'init_tasks'));
@@ -31,7 +31,7 @@ class Plugin {
   }
 
   public static function compile_contact_form_js() {
-    die(dirname(__FILE__));
+    // die(plugin_dir_path());
     $file = WEBSITE_SNAPSHOT__PLUGIN_PATH.'js/contact-form.js';
     $content = read_content($file);
     $success_class = get_option(DB__SUCCESS_CLASS_OPTION);
