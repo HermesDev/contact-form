@@ -1,4 +1,6 @@
 <div class="hermes-contact-form-wrap">
+  <div class="contact-form-text text-before">TEXT BEFORE</div>
+
   <form id="hermes-contact-form" class="contact-form" autocomplete="off" novalidate>
     <div class="name input-group">
       <label for="visitor-name">Name</label>
@@ -18,4 +20,6 @@
     </div>
     <div class="output input-group"></div>
   </form>
+
+  <div class="contact-form-text text-after">TEXT AFTER</div>
 </div>

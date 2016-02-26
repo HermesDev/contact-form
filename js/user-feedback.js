@@ -2,15 +2,25 @@
 
   /**
    * UserFeedback give basic user feedbacks
-   * @param object output the ouput dom element
+   * @param object inputs The inputs settings
+   * {
+   *  output: output,                  The ouput where to display error|success
+   *  successClass: 'my_sucess_class'  The success class to add
+   *  errorClass: 'my_error_class',    The error class to add
+   * }
    */
-  var UserFeedback = function(output, side) {
-    this.output = output;
-    this.successClassName = 'success';
+  var UserFeedback = function(inputs) {
+    if(!inputs.hasOwnProperty('output')) {
+      console.error('inputs object requires the output attribute');
+    }
 
-    if(typeof side !== 'undefined' && side === 'admin') {
-      this.successClassName = 'updated';
-    } 
+    this.output = inputs.output;
+    this.successClassName = typeof inputs.successClass === 'undefined' ? 'success' : inputs.successClass;
+    this.errorClassName = typeof inputs.errorClass === 'undefined' ? 'error' : inputs.errorClass;
+
+    // if(typeof side !== 'undefined' && side === 'admin') {
+    //   this.successClassName = 'updated';
+    // } 
   }
 
   /**
@@ -26,14 +36,14 @@
    */
   UserFeedback.prototype.showError = function(message, element) {
     if(message.indexOf('<div') === -1) {
-      message = '<div class="error">' + message + '</div>';
+      message = '<div class="' + this.errorClassName + '">' + message + '</div>';
     }
 
     this.output.innerHTML += message;
     this.output.style.display = 'block';
 
     if(typeof element !== 'undefined') {
-      element.setAttribute('class', 'error');
+      element.setAttribute('class', this.errorClassName);
     }
   };
 

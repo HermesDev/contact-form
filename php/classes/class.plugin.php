@@ -7,6 +7,7 @@ Plugin::init();
  */
 class Plugin {
   public static function init() {
+    self::compile_contact_form_js(); // First, compile the js with the right data
     add_action('wp_enqueue_styles', array(__CLASS__, 'enqueue_styles')); 
     add_action('wp_enqueue_scripts', array(__CLASS__, 'enqueue_scripts')); 
     add_action ('init', array(__CLASS__, 'init_tasks'));
@@ -29,11 +30,19 @@ class Plugin {
 
   }
 
-  /**
-   * enqueue_styles enqueue the styles
-   */
-  // public static function enqueue_styles() {
-  // }
+  public static function compile_contact_form_js() {
+    die(dirname(__FILE__));
+    $file = WEBSITE_SNAPSHOT__PLUGIN_PATH.'js/contact-form.js';
+    $content = read_content($file);
+    $success_class = get_option(DB__SUCCESS_CLASS_OPTION);
+    $error_class = get_option(DB__ERROR_CLASS_OPTION);
+    $success_class = !!$success_class ? $success_class : 'success';
+    $error_class = !!$error_class ? $error_class : 'error';
+    str_replace('{{success_class_marker}}', $success_class, $content);
+    str_replace('{{error_class_marker}}', $error_class, $content);
+    unlink($file);
+    write_content($file, $content);
+  }
 
   /**
    * enqueue_scripts enqueue the scripts
@@ -80,4 +89,29 @@ class Plugin {
   public static function show_settings_view() {
     include dirname(__FILE__).'/../../views/_template.admin-settings.php';
   }
+}
+
+
+/**
+ * Read the content of a file
+ * @param   $file  string  the path of the file
+ * @return         string  the file contents
+ */
+function read_content($file) {
+  $file_handler = fopen($file, 'r') or die("can't open file");
+  $contents = fread($file_handler, filesize($file));
+  fclose($file_handler);
+  return $contents;
+}
+
+
+/**
+ * Write new content to file
+ * @param   $file     string  the path of the file
+ * @param   $content  string  the content of the file
+ */
+function write_content($file, $content) {
+  $file_handler = fopen($file, 'w+') or die("can't open file");
+  fwrite($file_handler, $content);
+  fclose($file_handler);
 }

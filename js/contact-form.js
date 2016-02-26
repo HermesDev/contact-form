@@ -1,4 +1,3 @@
-
 (function() {
   /**
    * isEmail validate an email address
@@ -81,7 +80,11 @@
   function submitForm(event) {
     event.preventDefault();
     var output = this.querySelector('.output'), 
-        feedback = hermesdev.userFeedback(output);
+        feedback = hermesdev.userFeedback({
+          output: output,
+          successClass: {{success_class_marker}},
+          errorClass: {{error_class_marker}}
+        });
 
     var data = {};
 
@@ -151,7 +154,7 @@
           errorMessage = '';
           
       for(var i = 0; i < errorLen; i++) {
-        errorMessage += '<div class="error">' + response.messages[i] + '</div>';
+        errorMessage += '<div class={{error_class_marker}}>' + response.messages[i] + '</div>';
       }
 
       feedback.showError(errorMessage);

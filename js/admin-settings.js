@@ -41,7 +41,11 @@
     
     var form = event.srcElement;
         output = form.querySelector('.output'),
-        feedback = hermesdev.userFeedback(output, 'admin');
+        feedback = hermesdev.userFeedback({
+          output: output,
+          successClass: 'updated',
+          errorClass: 'error'
+        });
 
     console.log('debug start');
     console.log(errors);
