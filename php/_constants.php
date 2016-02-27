@@ -3,7 +3,6 @@
 define('PLUGIN_NAME', 'Contact Form');
 define('PLUGIN_PREFIX', 'hermes_cf_');
 define('WEBSITE_SNAPSHOT__PLUGIN_URL', plugin_dir_url(dirname(__FILE__)));
-define('WEBSITE_SNAPSHOT__PLUGIN_PATH', dirname(__FILE__));
 define('DB_PREFIX', 'HERMES__CONTACT_FORM');
 
 // Settings

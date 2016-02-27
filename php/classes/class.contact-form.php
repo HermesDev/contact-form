@@ -35,7 +35,7 @@ class Contact_Form {
 
     if(!$this->are_all_input_set($_POST)) {
       $form_incomplete_message = get_option(DB__FORM_INCOMPLETE_MESSAGE_OPTION);
-      $feedback['message'] = !!$form_incomplete_message ? $form_incomplete_message : 'The form is incomplete.'; // TODO: chech if empty string is not taken
+      $feedback['message'] = $form_incomplete_message !== '' ? $form_incomplete_message : 'The form is incomplete.'; 
       send_user_feedback($feedback);
     }
 
@@ -169,16 +169,16 @@ class Contact_Form {
     }
 
     $headers = 'From: ' . $data['name'] . ' <' . $data['email'] . '>' . "\r\n";
-    $to = !!$to_email ? $to_email : "florian.goussin@gmail.com"; // TODO: get rid of the hardcoded test email address
-    $subject = !!$subject ? $subject : 'EML foundation website message'; 
+    $to = $to_email != '' ? $to_email : "florian.goussin@gmail.com"; // TODO: get rid of the hardcoded test email address
+    $subject = $subject !== '' ? $subject : 'EML foundation website message'; 
     $data['message'] = '<p>' . $data['message'] . '</p><p>' . $data['name'] . '</p>';
 
     // Send the email
     if(wp_mail($to, $subject, $data['message'], $headers)) {
       $feedback['status'] = 'success';
-      $feedback['message'] = !!$success_message ? $success_message : 'Message has been sent succesfully!';
+      $feedback['message'] = $success_message !== '' ? $success_message : 'Message has been sent succesfully!';
     } else {
-      $feedback['message'] = !!$error_message ? $error_message : 'Impossible to send the message';
+      $feedback['message'] = $error_message !== '' ? $error_message : 'Impossible to send the message';
     }
   }
 }

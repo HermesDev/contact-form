@@ -11,11 +11,12 @@ License: GPLv2
 
 namespace hermes_dev\contact_form;
 
+include 'php/_constants.php';
+include 'php/utils.php';
+
 include 'php/classes/class.plugin.php';
 include 'php/classes/class.contact-form.php';
 include 'php/classes/class.admin-settings.php';
 
-include 'php/_constants.php';
-include 'php/utils.php';
 
 ?>

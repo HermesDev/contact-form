@@ -1,4 +1,6 @@
 (function() {
+  var userDefinedVariables = hermesContactForm__userDefinedVariables;
+
   /**
    * isEmail validate an email address
    * @param   string   email the email to validate
@@ -82,8 +84,8 @@
     var output = this.querySelector('.output'), 
         feedback = hermesdev.userFeedback({
           output: output,
-          successClass: {{success_class_marker}},
-          errorClass: {{error_class_marker}}
+          successClass: userDefinedVariables.successClass,
+          errorClass: userDefinedVariables.errorClass
         });
 
     var data = {};
@@ -154,7 +156,7 @@
           errorMessage = '';
           
       for(var i = 0; i < errorLen; i++) {
-        errorMessage += '<div class={{error_class_marker}}>' + response.messages[i] + '</div>';
+        errorMessage += '<div class="' + userDefinedVariables.errorClass + '">' + response.messages[i] + '</div>';
       }
 
       feedback.showError(errorMessage);
