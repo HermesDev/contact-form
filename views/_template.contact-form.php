@@ -1,5 +1,5 @@
 <div class="hermes-contact-form-wrap">
-  <div class="contact-form-text text-before">TEXT BEFORE</div>
+  <div class="contact-form-text text-before"><?php echo get_option(DB__TEXT_BEFORE_CONTACT_FORM_OPTION); ?></div>
 
   <form id="hermes-contact-form" class="contact-form" autocomplete="off" novalidate>
     <div class="name input-group">
@@ -21,5 +21,5 @@
     <div class="output input-group"></div>
   </form>
 
-  <div class="contact-form-text text-after">TEXT AFTER</div>
+  <div class="contact-form-text text-after"><?php echo get_option(DB__TEXT_AFTER_CONTACT_FORM_OPTION); ?></div>
 </div>

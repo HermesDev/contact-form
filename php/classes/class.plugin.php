@@ -12,9 +12,9 @@ class Plugin {
     add_action ('init', array(__CLASS__, 'init_tasks'));
     add_action('admin_init', array(__CLASS__, 'admin_init_tasks'));
     add_action('wp_footer', array(__CLASS__, 'wp_footer_tasks'));
-
-    add_shortcode('hermes_contact_form', array(__CLASS__, 'show_contact_form_view')); // Contact form
     add_action('admin_menu', array(__CLASS__, 'wp_admin_menu_tasks'));
+
+    add_shortcode('hermes_contact_form', array(__CLASS__, 'show_contact_form_view')); 
   }
 
   /**

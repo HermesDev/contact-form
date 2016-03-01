@@ -1,5 +1,5 @@
 (function() {
-  var userDefinedVariables = hermesContactForm__userDefinedVariables;
+  var userDefinedVariables = hermesdev.contactForm.userDefinedVariables;
 
   /**
    * isEmail validate an email address

@@ -60,9 +60,9 @@
     this.output.style.display = 'block';
   };
 
+  // namespaces
   if(!window.hasOwnProperty('hermesdev')) {
-    var hermesdev = {};
-    window.hermesdev = hermesdev;
+    window.hermesdev = {};
   }
 
   window.hermesdev.userFeedback = function(output, side) { // Factory

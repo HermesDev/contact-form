@@ -7,10 +7,23 @@ $error_class = $error_class !== '' ? $error_class : 'error';
 
 ?>
 
-<script>  
-  // define one global object for user defined variables
-  var hermesContactForm__userDefinedVariables = {
+<script> 
+(function(window) { 
+  var userDefinedVariables = {
     successClass: '<?php echo $success_class ?>',
     errorClass: '<?php echo $error_class ?>'
   };
+
+  // namespaces
+  if(!window.hasOwnProperty('hermesdev')) {
+    window.hermesdev = {};
+  }
+
+  if(!window.hermesdev.hasOwnProperty('contactForm')) {
+    window.hermesdev.contactForm = {};
+  }
+
+  window.hermesdev.contactForm.userDefinedVariables = userDefinedVariables;
+
+})(window);
 </script>
